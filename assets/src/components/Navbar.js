@@ -5,7 +5,7 @@ import Logo from "./Logo";
 
 function Navbar(props) {
   return (
-    <div className="container mx-auto pt-5 flex justify-between items-center ">
+    <div className="container mx-auto pt-5 flex justify-between items-center">
       <Logo />
       <div>{props.children}</div>
     </div>

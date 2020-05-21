@@ -1,12 +1,23 @@
 # ReactPhoenix
 
-To start your Phoenix server:
+Get the .env file and put it in the root directory
 
-- Install dependencies with `mix deps.get`
-- Create and migrate your database with `mix ecto.setup`
-- Create .env file with all the variables needed in `config.exs`
-- Install Node.js dependencies with `cd assets && npm install`
-- Start Phoenix endpoint with `mix phx.server`
+## Initial Setup
+
+```
+mix deps.get #Install deps
+cd assets  #Install clientside npm packages
+yarn
+cd ..
+source .env #Seed environment
+mix phx.server #Start server
+```
+
+## Running
+
+```
+iex -S mix phx.server
+```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 

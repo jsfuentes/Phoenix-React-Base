@@ -8,10 +8,10 @@ import BrowserUnsupported from "src/components/BrowserUnsupported/BrowserUnsuppo
 import Loading from "src/components/Loading.js";
 import ErrorBoundary from "src/components/ErrorBoundary";
 
-import App from "src/pages/App.js";
 import Landing from "src/pages/Landing";
 import my404 from "src/pages/my404";
 import Login from "src/pages/Login";
+import Test from "src/pages/Test";
 import UserContext from "src/contexts/UserContext.js";
 
 toast.configure({
@@ -31,16 +31,7 @@ export default function Router() {
           <Switch>
             <Route exact path="/login" component={Login} />
             <Route exact path="/" component={Landing} />
-            <Route
-              path="/event/:id"
-              render={() =>
-                DailyIframe.supportedBrowser().supported ? (
-                  <App />
-                ) : (
-                  <BrowserUnsupported />
-                )
-              }
-            />
+            <Route exact path="/test" component={Test} />
             <Route component={my404} />
           </Switch>
         </BrowserRouter>
