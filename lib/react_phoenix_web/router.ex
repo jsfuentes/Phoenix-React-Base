@@ -11,6 +11,8 @@ defmodule ReactPhoenixWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug ReactPhoenixWeb.Auth
   end
 
   scope "/auth", ReactPhoenixWeb do
@@ -27,7 +29,9 @@ defmodule ReactPhoenixWeb.Router do
 
     get "/", ApiController, :index
     post "/join", ApiController, :join
+    get "/users/me", UserController, :me
     resources "/users", UserController, except: [:new, :edit]
+    resources "/questions", QuestionController, except: [:new, :edit]
   end
 
   scope "/", ReactPhoenixWeb do
