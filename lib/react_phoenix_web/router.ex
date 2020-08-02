@@ -31,7 +31,6 @@ defmodule ReactPhoenixWeb.Router do
     post "/join", ApiController, :join
     get "/users/me", UserController, :me
     resources "/users", UserController, except: [:new, :edit]
-    resources "/questions", QuestionController, except: [:new, :edit]
   end
 
   scope "/", ReactPhoenixWeb do
