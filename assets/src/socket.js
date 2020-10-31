@@ -7,10 +7,10 @@
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
 import { Socket, Presence } from "phoenix";
-import { uuid } from "uuidv4";
+import { nanoid } from "nanoid";
 const debug = require("debug")("app:socket");
 
-const user_id = uuid();
+const user_id = nanoid(12);
 // let socket = new Socket("/socket", { params: { token: window.userToken } });
 const socket = new Socket("/socket", { params: { user_id } });
 

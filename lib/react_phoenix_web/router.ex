@@ -1,5 +1,6 @@
 defmodule ReactPhoenixWeb.Router do
   use ReactPhoenixWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,6 +14,13 @@ defmodule ReactPhoenixWeb.Router do
     plug :accepts, ["json"]
     plug :fetch_session
     plug ReactPhoenixWeb.Auth
+  end
+
+  if Mix.env() == :dev do
+    scope "/" do
+      pipe_through :browser
+      live_dashboard "/dashboard"
+    end
   end
 
   scope "/auth", ReactPhoenixWeb do

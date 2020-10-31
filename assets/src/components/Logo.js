@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import logoImg from "src/img/logo.png";
+import logoImg from "img/logo.png";
 
 function Logo(props) {
   return (

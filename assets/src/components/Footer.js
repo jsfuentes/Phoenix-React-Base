@@ -1,7 +1,5 @@
 import React from "react";
-import moment from "moment";
-import HeartImg from "src/img/heart.png";
-// import GlobeImg from "src/img/globe.png";
+import HeartImg from "img/heart.png";
 import Logo from "./Logo";
 
 export default function Footer() {
@@ -21,7 +19,7 @@ export default function Footer() {
           <span>on Earth</span>
         </p>
         <p className="text-sm text-gray-500 text-center sm:text-left">
-          © {moment().year()} Modulo Inc.
+          © 2021 Modulo Inc.
         </p>
       </div>
     </footer>

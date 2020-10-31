@@ -5,15 +5,20 @@ const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const postcssNormalize = require("postcss-normalize");
+const conf = require("./conf");
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || "10000"
 );
 
+const paths = {
+  appBuild: path.resolve(__dirname, "../priv/static"),
+};
+
 module.exports = (env, options) => ({
   optimization: {
     minimizer: [
-      new TerserPlugin({ cache: true, parallel: true, sourceMap: false }),
+      new TerserPlugin({ parallel: true }),
       new OptimizeCSSAssetsPlugin({}),
     ],
   },
@@ -21,8 +26,18 @@ module.exports = (env, options) => ({
     "./src/app.js": glob.sync("./vendor/**/*.js").concat(["./src/app.js"]),
   },
   output: {
-    filename: "app.js",
-    path: path.resolve(__dirname, "../priv/static/src"),
+    filename: "[name]",
+    chunkFilename: "src/[name].[contenthash:8].chunk.js",
+    path: paths.appBuild,
+    // webpack uses `publicPath` to determine where the app is being served from.
+    // It requires a trailing slash, or the file assets will get an incorrect path.
+    // We inferred the "public path" (such as / or /my-project) from homepage.
+    // ---------
+    // webpack needs to know it to put the right <script> hrefs into HTML even in
+    // single-page apps that may serve index.html for nested URLs like /todos/42.
+    // We can't use a relative path in HTML because we don't want to load something
+    // like /todos/42/static/js/bundle.7289d.js. We have to know the root.
+    publicPath: conf.get("CLIENT_URL") + "/",
   },
   module: {
     rules: [
@@ -39,7 +54,7 @@ module.exports = (env, options) => ({
             loader: require.resolve("url-loader"),
             options: {
               limit: imageInlineSizeLimit,
-              name: "../img/[name].[hash:8].[ext]",
+              name: "./media/[name].[hash:8].[ext]",
             },
           },
           {
@@ -62,21 +77,23 @@ module.exports = (env, options) => ({
               {
                 loader: "postcss-loader",
                 options: {
-                  ident: "postcss",
-                  plugins: [
-                    require("postcss-flexbugs-fixes"),
-                    require("tailwindcss"),
-                    require("postcss-preset-env")({
-                      autoprefixer: {
-                        flexbox: "no-2009",
-                      },
-                      stage: 3,
-                    }),
-                    // Adds PostCSS Normalize as the reset css with default options,
-                    // so that it honors browserslist config in package.json
-                    // which in turn let's users customize the target behavior as per their needs.
-                    postcssNormalize(),
-                  ],
+                  postcssOptions: {
+                    ident: "postcss",
+                    plugins: [
+                      require("postcss-flexbugs-fixes"),
+                      require("tailwindcss"),
+                      require("postcss-preset-env")({
+                        autoprefixer: {
+                          flexbox: "no-2009",
+                        },
+                        stage: 3,
+                      }),
+                      // Adds PostCSS Normalize as the reset css with default options,
+                      // so that it honors browserslist config in package.json
+                      // which in turn let's users customize the target behavior as per their needs.
+                      postcssNormalize(),
+                    ],
+                  },
                 },
               },
             ],
@@ -89,7 +106,7 @@ module.exports = (env, options) => ({
             // by webpacks internal loaders.
             exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
             options: {
-              name: "../img/[name].[hash:8].[ext]",
+              name: "./media/[name].[hash:8].[ext]",
             },
           },
           // ** STOP ** Are you adding a new loader?
@@ -100,13 +117,15 @@ module.exports = (env, options) => ({
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: "css/app.css" }),
-    new CopyWebpackPlugin([{ from: "public/", to: "../" }]),
+    new CopyWebpackPlugin({ patterns: [{ from: "public/", to: "./" }] }),
   ],
   resolve: {
     modules: [path.resolve("./node_modules")],
     alias: {
       src: path.resolve("./src"),
       conf: path.resolve("./conf"),
+      img: path.resolve("./img"),
+      css: path.resolve("./css"),
     },
   },
 });

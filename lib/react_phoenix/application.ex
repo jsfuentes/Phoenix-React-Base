@@ -8,6 +8,8 @@ defmodule ReactPhoenix.Application do
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
+      # Start the PubSub system
+      {Phoenix.PubSub, name: ReactPhoenix.PubSub},
       # Start the Ecto repository
       ReactPhoenix.Repo,
       # Start the endpoint when the application starts

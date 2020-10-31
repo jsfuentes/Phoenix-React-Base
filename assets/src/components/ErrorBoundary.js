@@ -1,7 +1,7 @@
 import React from "react";
 import * as Sentry from "@sentry/browser";
 
-import Doggo from "src/img/doggo.png";
+import Doggo from "img/doggo.png";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

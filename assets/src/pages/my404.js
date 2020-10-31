@@ -2,7 +2,8 @@ import React from "react";
 
 import Navbar from "src/components/Navbar";
 import Footer from "src/components/Footer";
-import Doggo from "src/img/doggo.png";
+
+import Doggo from "img/doggo.png";
 
 function my404() {
   return (

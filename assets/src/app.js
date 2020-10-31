@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser";
 
 import Router from "./Router";
 import * as serviceWorker from "./serviceWorker";
-import "src/css/index.css";
+import "css/index.css";
 import conf from "src/conf";
 import "phoenix_html";
 import socket from "src/socket.js";

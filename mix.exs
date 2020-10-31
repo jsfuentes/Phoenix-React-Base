@@ -5,7 +5,7 @@ defmodule ReactPhoenix.MixProject do
     [
       app: :react_phoenix,
       version: "0.1.0",
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -33,19 +33,21 @@ defmodule ReactPhoenix.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:ecto_sql, "~> 3.1"},
-      {:gettext, "~> 0.11"},
-      {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.1"},
-      {:phoenix_ecto, "~> 4.0"},
+      {:ecto_sql, "~> 3.5"},
+      {:gettext, "~> 0.18"},
+      {:httpoison, "~> 1.7"},
+      {:jason, "~> 1.2"},
+      {:phoenix, "~> 1.5.6"},
+      {:phoenix_ecto, "~> 4.2"},
       {:phoenix_html, "~> 2.11"},
+      {:phoenix_live_dashboard, "~> 0.1"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_pubsub, "~> 1.1"},
-      {:phoenix, "~> 1.4.16"},
-      {:plug_cowboy, "~> 2.3"},
-      {:postgrex, ">= 0.0.0"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:plug_cowboy, "~> 2.4"},
+      {:postgrex, "~> 0.15"},
+      {:sentry, "~> 8.0"},
       {:ueberauth, "~> 0.6"},
-      {:ueberauth_google, "~> 0.8"}
+      {:ueberauth_google, "~> 0.10"}
     ]
   end
 
