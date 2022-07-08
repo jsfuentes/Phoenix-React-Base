@@ -1,4 +1,3 @@
-import React from "react";
 import HeartImg from "src/img/heart.png";
 import Logo from "./Logo";
 
@@ -11,11 +10,7 @@ export default function Footer() {
         </div>
         <p className="flex justify-center sm:justify-start items-center mt-8 mb-4 text-gray-700">
           <span>Made with</span>{" "}
-          <img
-            className="inline w-4 h-auto mx-5px"
-            src={HeartImg}
-            alt="Heart"
-          />
+          <img className="inline w-4 h-auto mx-1" src={HeartImg} alt="Heart" />
           <span>on Earth</span>
         </p>
         <p className="text-sm text-gray-500 text-center sm:text-left">

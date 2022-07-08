@@ -55,7 +55,7 @@ export default class SocketClient {
       undefined,
       callback
     );
-    // debug("Joined MyChannel ", user_id);
+    debug("Joined MyChannel ", this.user_id);
     return channel;
   }
 

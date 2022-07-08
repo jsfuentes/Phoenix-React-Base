@@ -1,10 +1,13 @@
 defmodule ReactPhoenixWeb.UserSocket do
   use Phoenix.Socket
+  require Logger
 
   # A Socket handler
   #
   # It's possible to control the websocket connection and
   # assign values that can be accessed by your channel topics.
+
+  alias ReactPhoenix.Accounts
 
   ## Channels
   channel "user:*", ReactPhoenixWeb.UserChannel

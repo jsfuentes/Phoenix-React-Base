@@ -2,9 +2,7 @@ defmodule ReactPhoenixWeb.ApiController do
   use ReactPhoenixWeb, :controller
   require Logger
 
-  action_fallback ReactPhoenixWeb.ApiFallbackController
-
-  plug ReactPhoenixWeb.LoggedIn when action in [:link_preview]
+  action_fallback ReactPhoenixWeb.FallbackController
 
   def index(conn, _params) do
     conn

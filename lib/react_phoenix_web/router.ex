@@ -36,9 +36,9 @@ defmodule ReactPhoenixWeb.Router do
   scope "/auth", ReactPhoenixWeb do
     pipe_through :browser
 
-    get "/:provider", AuthController, :request
-    get "/:provider/callback", AuthController, :callback
-    post "/:provider/callback", AuthController, :callback
+    # get "/:provider", AuthController, :request
+    # get "/:provider/callback", AuthController, :callback
+    # post "/:provider/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
@@ -47,7 +47,7 @@ defmodule ReactPhoenixWeb.Router do
 
     get "/", ApiController, :index
     post "/join", ApiController, :join
-    get "/users/me", UserController, :me
+    post "/users/me", UserController, :me
     resources "/users", UserController, except: [:new, :edit]
   end
 

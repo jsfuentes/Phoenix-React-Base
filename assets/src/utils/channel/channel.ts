@@ -1,9 +1,7 @@
 import * as Sentry from "@sentry/react";
 import { Channel, Socket, SocketConnectOption } from "phoenix";
-import ChannelPushError, {
-  getChannelPushErrorData,
-} from "src/utils/ChannelPushError";
 import { sleep } from "src/utils/helpers";
+import ChannelPushError, { getChannelPushErrorData } from "./ChannelPushError";
 const debug = require("debug")("app:utils:channel");
 
 /*

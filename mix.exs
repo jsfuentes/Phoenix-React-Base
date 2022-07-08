@@ -45,6 +45,7 @@ defmodule ReactPhoenix.MixProject do
       {:gettext, "~> 0.18"},
       {:hackney, "~> 1.8"},
       {:jason, "~> 1.2"},
+      {:nanoid, "~> 2.0.4"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_dashboard, "~> 0.6"},

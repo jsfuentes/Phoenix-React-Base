@@ -24,7 +24,7 @@ export default function UserProvider(props: UserProviderProps) {
     if (uid) {
       clientUserGuess = { id: uid, type: "anon" };
     } else {
-      clientUserGuess = { id: nanoid(12), type: "anon" };
+      clientUserGuess = { id: nanoid(), type: "anon" };
     }
 
     //2 Server assigns identity and sets session

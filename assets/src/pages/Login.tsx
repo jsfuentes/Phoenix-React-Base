@@ -50,12 +50,6 @@ export default function Login() {
                 </div>
               </Button>
             </div>
-
-            <div className="flex items-center my-6">
-              <div className="border-b  border-gray-200 w-full text-center self-center" />
-              <span className="px-4 text-gray-400 font-medium">or</span>
-              <div className="border-b  border-gray-200 w-full text-center self-center" />
-            </div>
           </div>
         </div>
       </div>

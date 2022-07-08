@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import { toast } from "react-toastify";
 import { axios } from "src/api/axios";
+import Button from "src/components/Button";
 import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
-
-React;
+const debug = require("debug")("app:Landing");
 
 export default function Landing() {
   const [resp, setResp] = useState("");
@@ -13,7 +13,7 @@ export default function Landing() {
     axios
       .get("/api")
       .then((response) => {
-        console.log("Haha", response);
+        debug("Landing Page response", response);
         setResp(response.data);
       })
       .catch((error) => {
@@ -31,16 +31,14 @@ export default function Landing() {
 
       <div className="w-full p-8">
         <div className="px-4 pb-4 flex flex-col justify-center items-center">
-          <div className="text-4xl block font-bold mb-4">
+          <div className="text-4xl flex flex-row font-bold mb-4">
+            <div className="bx bx-rocket animate-wiggle text-black mx-1" />{" "}
             Welcome to React Base BB
           </div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
-            type="button"
-          >
+          <Button onClick={() => toast.warn("Alert it up in herrrreee")}>
             Useless Button
-          </button>
-          <div className="text-2xl block font-bold mb-4">
+          </Button>
+          <div className="text-2xl font-bold my-4">
             {resp ? `The Server Says "${resp}"` : "The Server Can't Be Reached"}
           </div>
         </div>

@@ -6,14 +6,11 @@ import conf from "conf";
 import "phoenix_html";
 // Put all CSS stylesheets here that are over ridden so it properly cascades event with code splitting
 // import "react-datepicker/dist/react-datepicker.css";
-import React from "react";
 import { createRoot } from "react-dom/client";
 import "react-toastify/dist/ReactToastify.css";
 import "src/css/index.css";
 import Router from "./Router";
 import * as serviceWorker from "./serviceWorker";
-
-React;
 
 const IS_SENTRY_ACTIVE =
   conf.has("SENTRY_DNS") && conf.get("SENTRY_DNS") !== "";

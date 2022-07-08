@@ -1,4 +1,4 @@
-defmodule ReactPhoenixWeb.ApiFallbackController do
+defmodule ReactPhoenixWeb.FallbackController do
   @moduledoc """
   Translates controller action results into valid `Plug.Conn` responses.
 
@@ -29,10 +29,4 @@ defmodule ReactPhoenixWeb.ApiFallbackController do
     Logger.error("ApiFallbackController unrecognized return", extra: %{x: x})
     x
   end
-
-  # def call(conn, {:error, {:bad_request, msg}}) do
-  #   conn
-  #   |> put_status(:bad_request)
-  #   |> put_view
-  # end
 end

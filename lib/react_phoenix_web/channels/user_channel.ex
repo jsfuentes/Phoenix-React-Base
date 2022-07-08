@@ -1,5 +1,6 @@
 defmodule ReactPhoenixWeb.UserChannel do
   use ReactPhoenixWeb, :channel
+  require Logger
 
   @impl true
   def join("user:" <> user_id, payload, socket) do
