@@ -1,13 +1,12 @@
 import conf from "conf";
 import queryString from "query-string";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from "src/components/Button";
 import Logo from "src/components/Logo";
 import UserContext from "src/contexts/UserContext";
 import googleIcon from "src/img/google.png";
-React;
 const debug = require("debug")("app:pages:Login");
 
 //Can set "route" and "msg" with query params

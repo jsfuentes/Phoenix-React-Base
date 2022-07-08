@@ -149,6 +149,7 @@ module.exports = (env, options) => ({
     new CopyWebpackPlugin({ patterns: [{ from: "public/", to: "./" }] }),
     new webpack.ProvidePlugin({
       process: "process/browser",
+      React: "react",
     }), // https://stackoverflow.com/questions/41359504/webpack-bundle-js-uncaught-referenceerror-process-is-not-defined
     // Uncomment to fail webpack on typescript errors (and other errors)
     // function () {
