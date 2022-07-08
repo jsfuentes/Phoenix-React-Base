@@ -1,30 +1,18 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { axios } from "src/api/axios";
-import Button from "src/components/Button";
 import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
+import PresenceList from "src/components/PresenceList";
+import BoardProvider from "src/contexts/BoardProvider";
 const debug = require("debug")("app:Dashboard");
 
 export default function Dashboard() {
-  const [resp, setResp] = useState("");
-  useEffect(() => {
-    axios
-      .get("/api")
-      .then((response) => {
-        debug("Dashboard Page response", response);
-        setResp(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
   return (
-    <>
+    <BoardProvider>
       <Navbar>
-        <Link to="/login" className="navlink">
+        <Link to="/dashboard" className="font-medium mx-2">
+          Dashboard
+        </Link>
+        <Link to="/login" className="font-medium mx-2">
           Login
         </Link>
       </Navbar>
@@ -35,15 +23,10 @@ export default function Dashboard() {
             <div className="bx bx-rocket animate-wiggle text-black mx-1" />{" "}
             Dashboard Page
           </div>
-          <Button onClick={() => toast.warn("Alert it up in herrrreee")}>
-            Useless Button
-          </Button>
-          <div className="text-2xl font-bold my-4">
-            {resp ? `The Server Says "${resp}"` : "The Server Can't Be Reached"}
-          </div>
+          <PresenceList />
         </div>
       </div>
       <Footer />
-    </>
+    </BoardProvider>
   );
 }

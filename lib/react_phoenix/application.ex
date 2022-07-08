@@ -15,7 +15,8 @@ defmodule ReactPhoenix.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: ReactPhoenix.PubSub},
       # Start the Endpoint (http/https)
-      ReactPhoenixWeb.Endpoint
+      ReactPhoenixWeb.Endpoint,
+      ReactPhoenixWeb.Presence
       # Start a worker by calling: ReactPhoenix.Worker.start_link(arg)
       # {ReactPhoenix.Worker, arg}
     ]

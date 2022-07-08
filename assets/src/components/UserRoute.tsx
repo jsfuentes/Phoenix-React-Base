@@ -45,9 +45,14 @@ export default function UserRoute(props: UserRouteProps) {
     }
   }, [failedRequired, failedRequiredOrganizer]);
 
-  if (userLoading) return <Loading />;
-  else if (failedRequired || failedRequiredOrganizer) {
+  if (userLoading) {
+    debug("LOADINGGG");
+    return <Loading />;
+  } else if (failedRequired || failedRequiredOrganizer) {
     debug("Navigation Debug - UserRoute to landing");
     return <Navigate to="/login" />;
-  } else return <Outlet />;
+  } else {
+    debug("LOADED");
+    return <Outlet />;
+  }
 }

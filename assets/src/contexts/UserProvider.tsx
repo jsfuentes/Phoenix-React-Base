@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { axios } from "src/api/axios";
 import UserContext from "src/contexts/UserContext";
+import UserStatusProvider from "src/contexts/UserStatusProvider";
 const debug = require("debug")("app:UserProvider");
 
 const LOCAL_STORAGE_UID_KEY = "uid";
@@ -118,7 +119,7 @@ export default function UserProvider(props: UserProviderProps) {
         logout,
       }}
     >
-      {props.children}
+      <UserStatusProvider>{props.children}</UserStatusProvider>
     </UserContext.Provider>
   );
 }

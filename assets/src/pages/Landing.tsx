@@ -24,7 +24,10 @@ export default function Landing() {
   return (
     <>
       <Navbar>
-        <Link to="/login" className="navlink">
+        <Link to="/dashboard" className="font-medium mx-2">
+          Dashboard
+        </Link>
+        <Link to="/login" className="font-medium mx-2">
           Login
         </Link>
       </Navbar>

@@ -11,6 +11,7 @@ defmodule ReactPhoenixWeb.UserSocket do
 
   ## Channels
   channel "user:*", ReactPhoenixWeb.UserChannel
+  channel "board:*", ReactPhoenixWeb.BoardChannel
 
   @impl true
   def connect(%{"token" => token}, socket, _connect_info) do
