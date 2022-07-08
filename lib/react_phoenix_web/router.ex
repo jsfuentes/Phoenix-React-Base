@@ -29,7 +29,7 @@ defmodule ReactPhoenixWeb.Router do
     scope "/" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: ReactPhoenixWeb.Telemetry
+      live_dashboard "/phoenix_dashboard", metrics: ReactPhoenixWeb.Telemetry
     end
   end
 
