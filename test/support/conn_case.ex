@@ -22,6 +22,8 @@ defmodule ReactPhoenixWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
+      import ReactPhoenixWeb.ConnCase
+
       alias ReactPhoenixWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
@@ -30,12 +32,7 @@ defmodule ReactPhoenixWeb.ConnCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(ReactPhoenix.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(ReactPhoenix.Repo, {:shared, self()})
-    end
-
+    ReactPhoenix.DataCase.setup_sandbox(tags)
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

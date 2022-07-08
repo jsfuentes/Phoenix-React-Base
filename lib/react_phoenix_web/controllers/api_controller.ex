@@ -1,44 +1,46 @@
 defmodule ReactPhoenixWeb.ApiController do
   use ReactPhoenixWeb, :controller
+  require Logger
+
+  action_fallback ReactPhoenixWeb.ApiFallbackController
+
+  plug ReactPhoenixWeb.LoggedIn when action in [:link_preview]
 
   def index(conn, _params) do
-    # users = [
-    #   %{name: "Joe",
-    #     email: "joe@example.com",
-    #     password: "topsecret",
-    #     stooge: "moe"},
-    #   %{name: "Anne",
-    #     email: "anne@example.com",
-    #     password: "guessme",
-    #     stooge: "larry"},
-    #   %{name: "Franklin",
-    #     email: "franklin@example.com",
-    #     password: "guessme",
-    #     stooge: "curly"},
-    # ]
-    json conn, "Love you baby"
+    conn
+    |> put_status(200)
+    |> text("OK")
   end
 
-  # def join(conn, _params) do
-  #   nowUTC = DateTime.utc_now() |> DateTime.to_unix()
-  #   rawPayload = %{
-  #     privacy: "public",
-  #     properties: %{exp: nowUTC + (24 * 60 * 60)}
-  #   }
-  #   payload = Jason.encode!(rawPayload)
-  #   url = "https://api.daily.co/v1/rooms"
-  #   headers = ["Accept": "Application/json; Charset=utf-8", "Content-Type": "Application/json; charset=utf-8", 
-  #     "Authorization": "Bearer #{Application.fetch_env!(:react_phoenix, :daily_api)}"]
-    
-  #   case HTTPoison.post url, payload, headers do
-  #     {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-  #       myBody = Jason.decode!(body)
-  #       IO.inspect myBody
-  #       json conn, myBody
-  #     {:ok, %HTTPoison.Response{status_code: 404}} ->
-  #       json conn, "Not found :("
-  #     {:error, %HTTPoison.Error{reason: reason}} ->
-  #       json conn, reason
-  #   end
-  # end
+  def error(conn, _params) do
+    Logger.error("TESTING ERROR SENTRY", extra: %{a: "help", b: 1})
+
+    try do
+      raise "This Will Error, Really ?"
+    rescue
+      my_exception ->
+        IO.inspect(my_exception)
+
+        Sentry.capture_exception(my_exception,
+          stacktrace: __STACKTRACE__,
+          extra: %{extra: "Welcome"}
+        )
+    end
+  end
+
+  def not_found(conn, _params) do
+    conn
+    |> put_status(404)
+    |> text("")
+  end
+
+  def on_auth(conn, params) do
+    # Put session train copied in auth_controller for magic link login
+    conn
+    |> put_session(:auth_id, Map.get(params, "id"))
+    |> put_session(:auth_route, Map.get(params, "route"))
+    |> put_session(:auth_invite_token, Map.get(params, "invite_token"))
+    |> put_session(:when_organizer_route, Map.get(params, "when_organizer_route"))
+    |> send_resp(:no_content, "")
+  end
 end

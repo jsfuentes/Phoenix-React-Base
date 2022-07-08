@@ -1,8 +1,20 @@
 # ReactPhoenix
 
-Get the .env file and put it in the root directory
+This base project uses a boilerplate Phoenix along with a custom Typescript React frontend. It also comes with the following:
+
+- Default frontend file structure with folder for types, contexts, and api calls
+- Default components and pages including a Homepage, Login, and 404 Page
+- React Router setup with Code Splitting and Lazy Loading
+- `debug` setup offering a better color coded version of console.log
+- `react-toastify` setup
+- Sentry setup on both backend and frontend
+- conf folder with a similar interface to the npm package `config`
+- blazing fast esbuild-loader webpack config beating babel-loader by 80%
+- Default user creation and user context
 
 ## Initial Setup
+
+Put your environment variables in `/.env`, use sample.env to see what variables you need
 
 ```
 mix deps.get #Install deps

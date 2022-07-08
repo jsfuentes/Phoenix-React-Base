@@ -5,18 +5,19 @@ defmodule ReactPhoenix.Application do
 
   use Application
 
+  @impl true
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
-      # Start the PubSub system
-      {Phoenix.PubSub, name: ReactPhoenix.PubSub},
       # Start the Ecto repository
       ReactPhoenix.Repo,
-      # Start the endpoint when the application starts
-      ReactPhoenixWeb.Endpoint,
-      ReactPhoenixWeb.Presence,
-      # Starts a worker by calling: ReactPhoenix.Worker.start_link(arg)
-      # {ReactPhoenixWeb.Scheduler, []},
+      # Start the Telemetry supervisor
+      ReactPhoenixWeb.Telemetry,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: ReactPhoenix.PubSub},
+      # Start the Endpoint (http/https)
+      ReactPhoenixWeb.Endpoint
+      # Start a worker by calling: ReactPhoenix.Worker.start_link(arg)
+      # {ReactPhoenix.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -27,6 +28,7 @@ defmodule ReactPhoenix.Application do
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
+  @impl true
   def config_change(changed, _new, removed) do
     ReactPhoenixWeb.Endpoint.config_change(changed, removed)
     :ok
