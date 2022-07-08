@@ -2,9 +2,16 @@ defmodule ReactPhoenix.MixProject do
   use Mix.Project
 
   def project do
+    {epoch, _} = System.cmd("git", ~w|log -1 --date=raw --format=%cd|)
+
+    [sec, _tz] =
+      epoch
+      |> String.split(~r/\s+/, trim: true)
+      |> Enum.map(&String.to_integer/1)
+
     [
       app: :react_phoenix,
-      version: "0.1.0",
+      version: "1.0.#{sec}",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
