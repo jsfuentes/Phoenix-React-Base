@@ -39,6 +39,7 @@
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.3",
+    "@types/phoenix": "^1.5.4",
     "@types/react-helmet": "^6.1.5",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
