@@ -8,6 +8,7 @@ interface NavbarProps {
   children?: React.ReactNode;
   center?: React.ReactNode;
   bottom?: React.ReactNode;
+  className?: string;
 }
 
 export default function Navbar(props: NavbarProps) {
@@ -40,6 +41,7 @@ export default function Navbar(props: NavbarProps) {
           true,
         "z-100 sticky top-0 left-0 text-black bg-transparent h-16 border-b border-transparent ease-in-out px-4":
           true,
+        [props.className || ""]: props.className,
       })}
       style={{
         backgroundColor: `${scrolled && "rgba(256, 256, 256, 0.9)"}`,
