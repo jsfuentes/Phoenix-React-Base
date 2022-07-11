@@ -34,7 +34,7 @@ export default function BoardProvider(props: BoardProviderProps) {
       (async () => {
         try {
           debug("Joining board channel");
-          const channelObj = await joinBoardChannel(board_id);
+          const channelObj = await joinBoardChannel(board_id, { userStatusR });
           channel = channelObj.channel;
           presence = channelObj.presence;
         } catch (err) {

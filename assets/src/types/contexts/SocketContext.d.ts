@@ -5,5 +5,10 @@ export interface SocketContextType {
   myChannel: null | Channel;
   joinBoardChannel:
     | null
-    | ((board_id: string) => Promise<{ channel: Channel; presence: Presence }>);
+    | ((
+        board_id: string,
+        payload: {
+          userStatusR: React.MutableRefObject<Partial<UserStatusState>>;
+        }
+      ) => Promise<{ channel: Channel; presence: Presence }>);
 }
