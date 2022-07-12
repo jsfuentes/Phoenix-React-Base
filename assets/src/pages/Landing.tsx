@@ -29,7 +29,6 @@ export default function Landing() {
   }, []);
 
   const goToNewBoard = useCallback(async () => {
-    debug("GO1");
     if (!user?.id) {
       dispatch(
         logMessage("Somehow doesn't have user in goToNewBoard", {
@@ -39,7 +38,6 @@ export default function Landing() {
       return;
     }
 
-    debug("GO2");
     try {
       const board = await BoardService.createDefaultBoard(user?.id);
       navigate(`/b/${board.id}`);
