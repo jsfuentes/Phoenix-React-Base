@@ -7,7 +7,7 @@ import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
 import UserContext from "src/contexts/UserContext";
 import { useAppDispatch } from "src/redux/hooks";
-import { logMessage } from "src/redux/notification";
+import { logErrorMessage } from "src/redux/notification";
 const debug = require("debug")("app:Landing");
 
 export default function Landing() {
@@ -30,11 +30,7 @@ export default function Landing() {
 
   const goToNewBoard = useCallback(async () => {
     if (!user?.id) {
-      dispatch(
-        logMessage("Somehow doesn't have user in goToNewBoard", {
-          toastMessage: "You need to be logged in to create a board",
-        })
-      );
+      dispatch(logErrorMessage("You need to be logged in to create a board"));
       return;
     }
 

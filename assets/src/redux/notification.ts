@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import * as Sentry from "@sentry/react";
 import { AxiosError } from "axios";
-import _ from "lodash";
 import ChannelPushError, {
   getChannelPushErrorData,
 } from "src/utils/channel/ChannelPushError";
@@ -48,44 +47,41 @@ const NotificationSlice = createSlice({
 export const { setError } = NotificationSlice.actions;
 
 export interface NotificationExtraData {
-  //logAxios
-  notifType?: NOTIF_STATE | null;
   recommend?: string;
-
-  //logMessage
-  toastMessage?: null | string;
-
-  //all
+  notifType?: NOTIF_STATE | null;
   extraData?: Record<string, unknown>;
 }
 
-//basically combines Sentry.captureMessage and console.error so its in the logs and Sentry
-export const logMessage =
-  (message: string, argOpts: NotificationExtraData = {}) =>
+export const logErrorMessage =
+  (
+    message: string,
+    argOpts: Pick<NotificationExtraData, "notifType" | "extraData"> = {}
+  ) =>
   (dispatch: AppDispatch) => {
-    const opts = _.defaultsDeep(argOpts, {
-      toastMessage: null,
-      extraData: null,
-    });
+    const opts = {
+      notifType: NOTIF_STATE.TOAST,
+      ...argOpts,
+    };
 
     // window.message = message;
-    console.error(message, argOpts.extraData);
+    console.error(message, opts.extraData);
     Sentry.captureMessage(message, { extra: opts.extraData });
 
-    if (opts.toastMessage) {
-      dispatch(
-        setError({ type: NOTIF_STATE.TOAST, message: opts.toastMessage })
-      );
+    if (opts.notifType === NOTIF_STATE.TOAST) {
+      dispatch(setError({ type: NOTIF_STATE.TOAST, message }));
     }
   };
 
 export const logChannelJoinError =
-  (failedChannel: string, err: Error, argOpts: NotificationExtraData = {}) =>
+  (
+    failedChannel: string,
+    err: Error,
+    argOpts: Pick<NotificationExtraData, "extraData"> = {}
+  ) =>
   (dispatch: AppDispatch) => {
-    const opts = _.defaultsDeep(argOpts, {
-      extraData: null,
-    });
-
+    const opts = {
+      ...argOpts,
+    };
     // window.err = err;
     console.error(failedChannel, err);
     Sentry.captureException(err, { extra: opts.extraData });
@@ -96,27 +92,28 @@ export const logChannelJoinError =
       const message = `${failedChannel} join failed${
         err.message ? " - " + err.message : ""
       }`;
+      Sentry.captureMessage(message, { extra: opts.extraData });
       dispatch(setError({ type: NOTIF_STATE.TOAST, message }));
     }
   };
 
-//May need to additionally Sentry.captureMessage if you want to highlight wat failed in Sentry, as this will just throw the error
 export const logAxiosError =
   (err: AxiosError, failedEvent: string, argOpts: NotificationExtraData = {}) =>
   (dispatch: AppDispatch) => {
     debug("Log axios error", err, failedEvent, argOpts);
-    const opts = _.defaultsDeep(argOpts, {
+    const opts = {
       recommend: "try again or contact support",
       notifType: NOTIF_STATE.TOAST,
-      extraData: null,
-    });
+      extraData: undefined,
+      ...argOpts,
+    };
 
     // window.err = err;
     console.error(failedEvent, err, opts.extraData);
-    Sentry.captureException(err, { extra: opts.extraData });
+    Sentry.captureException(err, { extra: { failedEvent, ...opts.extraData } });
 
     if (opts.notifType == NOTIF_STATE.TOAST) {
-      let recommend = opts.recommend;
+      let recommend: string | null = opts.recommend;
       let errMsg;
       if (err.response) {
         //4xx/5xx server error
@@ -156,9 +153,11 @@ export const logAxiosError =
         //something while setting up request
         errMsg = err.message && err.message.length > 255 ? "" : err.message; //this handles when it returns HTML pages
       }
+
       const message = `${failedEvent} failed${
         recommend ? ", " + recommend : ""
       } – ${errMsg}`;
+      Sentry.captureMessage(message, { extra: opts.extraData });
       dispatch(setError({ type: NOTIF_STATE.TOAST, message }));
     }
   };
@@ -176,16 +175,18 @@ export const logChannelPushError =
       });
     }
 
+    const opts = {
+      recommend: "try again or contact support",
+      notifType: NOTIF_STATE.TOAST,
+      extraData: undefined,
+      ...argOpts,
+    };
+
     const channelData = getChannelPushErrorData(err);
     // window.err = err;
     console.error(failedEvent, err, channelData);
     Sentry.captureException(err, {
-      extra: channelData,
-    });
-
-    const opts = _.defaultsDeep(argOpts, {
-      recommend: "try again or contact support",
-      notifType: NOTIF_STATE.TOAST,
+      extra: { channelData, ...opts.extraData },
     });
 
     if (opts.notifType == NOTIF_STATE.TOAST) {
@@ -194,6 +195,7 @@ export const logChannelPushError =
       const message = `${failedEvent} failed${
         recommend ? ", " + recommend : ""
       } – ${errMsg}`;
+      Sentry.captureMessage(message, { extra: opts.extraData });
       dispatch(setError({ type: NOTIF_STATE.TOAST, message }));
     }
   };

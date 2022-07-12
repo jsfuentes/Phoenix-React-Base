@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import ErrorBoundary from "src/components/ErrorBoundary";
+import ErrorManager from "src/components/ErrorManager";
 import Loading from "src/components/Loading";
 import MyRedirect from "src/components/MyRedirect";
 import UserRoute from "src/components/UserRoute";
@@ -43,46 +44,49 @@ export default function Router() {
   // }, []);
 
   return (
-    <Provider store={store}>
-      <UserProvider>
-        <SocketProvider>
-          <ErrorBoundary>
-            <ToastContainer
-              bodyClassName="px-2 text-white font-medium w-full relative min-w-full "
-              toastClassName="py-3 rounded bg-gray-900 flex items-center justify-center min-h-0 shadow-md " //disable default min height
-              closeButton={false}
-              position={toast.POSITION.TOP_CENTER}
-              autoClose={7500} //false to disable
-              closeOnClick={true}
-              pauseOnHover={true}
-              pauseOnFocusLoss={false}
-            />
-            <Suspense fallback={<Loading />}>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/b/:board_id" element={<Board />} />
-                  <Route path="/board" element={<Board />} />
+    <ErrorBoundary>
+      <Provider store={store}>
+        <UserProvider>
+          <SocketProvider>
+            <ErrorManager>
+              <ToastContainer
+                bodyClassName="px-2 text-white font-medium w-full relative min-w-full "
+                toastClassName="py-3 rounded bg-gray-900 flex items-center justify-center min-h-0 shadow-md " //disable default min height
+                closeButton={false}
+                position={toast.POSITION.TOP_CENTER}
+                autoClose={7500} //false to disable
+                closeOnClick={true}
+                pauseOnHover={true}
+                pauseOnFocusLoss={false}
+              />
 
-                  {/* Redirect doesn't work on external links, https://stackoverflow.com/questions/42914666/react-router-external-link */}
-                  <Route
-                    path="/careers"
-                    element={
-                      <MyRedirect url="https://clayboard.notion.site/Careers-8b6817689d0e4b82b16fe8c9d31321a1" />
-                    }
-                  />
+              <Suspense fallback={<Loading />}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/b/:board_id" element={<Board />} />
+                    <Route path="/board" element={<Board />} />
 
-                  <Route path="/" element={<UserRoute />}>
-                    <Route path="/dashboard/*" element={<Dashboard />} />
-                  </Route>
-                  <Route path="*" element={<My404 />} />
-                </Routes>
-              </BrowserRouter>
-            </Suspense>
-          </ErrorBoundary>
-        </SocketProvider>
-      </UserProvider>
-    </Provider>
+                    {/* Redirect doesn't work on external links, https://stackoverflow.com/questions/42914666/react-router-external-link */}
+                    <Route
+                      path="/careers"
+                      element={
+                        <MyRedirect url="https://clayboard.notion.site/Careers-8b6817689d0e4b82b16fe8c9d31321a1" />
+                      }
+                    />
+
+                    <Route path="/" element={<UserRoute />}>
+                      <Route path="/dashboard/*" element={<Dashboard />} />
+                    </Route>
+                    <Route path="*" element={<My404 />} />
+                  </Routes>
+                </BrowserRouter>
+              </Suspense>
+            </ErrorManager>
+          </SocketProvider>
+        </UserProvider>
+      </Provider>
+    </ErrorBoundary>
   );
 }

@@ -4,6 +4,8 @@ defmodule ReactPhoenixWeb.BoardChannel do
   require Logger
 
   alias ReactPhoenixWeb.Helpers.PresenceHelper
+  alias ReactPhoenix.Stickies
+  alias ReactPhoenix.Stickies.Sticky
 
   @impl true
   def join("board:" <> board_id, payload, socket) do
@@ -13,7 +15,7 @@ defmodule ReactPhoenixWeb.BoardChannel do
     if Map.has_key?(pList, user_id) do
       {:error, %{reason: "DUPLICATE_USER"}}
     else
-      assignedSocket = assign(socket, :event_id, board_id)
+      assignedSocket = assign(socket, :board_id, board_id)
       send(self(), {:after_join, Map.get(payload, "userStatus")})
       {:ok, :hello, assignedSocket}
     end
@@ -39,6 +41,22 @@ defmodule ReactPhoenixWeb.BoardChannel do
   @impl true
   def handle_in("update_self", userStatus, socket) do
     PresenceHelper.update(socket, userStatus)
+
+    {:reply, :ok, socket}
+  end
+
+  @impl true
+  def handle_in("add_sticky", %{"title" => title} = payload, socket) do
+    user_id = socket.assigns.user_id
+    board_id = socket.assigns.board_id
+
+    {:ok, %Sticky{}} =
+      Stickies.create_sticky(%{
+        "board_id" => board_id,
+        "user_id" => user_id,
+        "title" => title,
+        "description" => Map.get(payload, "description", nil)
+      })
 
     {:reply, :ok, socket}
   end

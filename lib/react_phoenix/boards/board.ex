@@ -8,6 +8,7 @@ defmodule ReactPhoenix.Boards.Board do
     field :title, :string
     belongs_to :owner, ReactPhoenix.Accounts.User, type: :string
     has_many :activities, ReactPhoenix.Activities.Activity
+    has_many :stickies, ReactPhoenix.Stickies.Sticky
 
     timestamps()
   end

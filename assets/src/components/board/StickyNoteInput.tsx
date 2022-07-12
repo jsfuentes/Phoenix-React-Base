@@ -1,13 +1,19 @@
 import classNames from "classnames";
-import React from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import Button from "src/components/Button";
+import BoardContext from "src/contexts/BoardContext";
+import { useAppDispatch } from "src/redux/hooks";
+import { logChannelPushError, logErrorMessage } from "src/redux/notification";
+import { pushChannelAsync } from "src/utils/channel/channel";
+const debug = require("debug")("app:StickyNoteInput");
 
 interface StickyNoteInputProps {
   className?: string;
 }
 
 export default function StickyNoteInput(props: StickyNoteInputProps) {
+  const { boardChannel } = useContext(BoardContext);
   const {
     register,
     handleSubmit,
@@ -18,9 +24,28 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
       note: "",
     },
   });
+  const dispatch = useAppDispatch();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log("THOMAS ", data.note);
+  const onSubmit = handleSubmit(async (data) => {
+    if (!boardChannel) {
+      dispatch(
+        logErrorMessage(
+          "Submitting sticky note failed, try again or contact support - invalid board connection"
+        )
+      );
+      return;
+    }
+
+    debug("Submit Sticky", data);
+
+    try {
+      const resp = await pushChannelAsync(boardChannel, "add_sticky", {
+        title: data.note,
+      });
+      debug("add_sticky resp", resp);
+    } catch (err) {
+      dispatch(logChannelPushError(err, "Submitting Sticky"));
+    }
   });
 
   return (
