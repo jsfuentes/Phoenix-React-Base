@@ -7,6 +7,7 @@ interface TempBoardContextProviderProps {
 
 const activities: Activity[] = [
   {
+    id: 1,
     title: "Generate Ideas",
     description: "Generate ideas for your board",
     type: "crazy8",
@@ -34,13 +35,14 @@ const activities: Activity[] = [
         sticky_ids: [1, 3],
       },
       {
-        user_id: 1,
+        user_id: 2,
         title: "Jorge",
         sticky_ids: [2],
       },
     ],
   },
   {
+    id: 2,
     title: "Sticky Sort",
     description: "Sort your board",
     type: "theme_sort",
@@ -84,13 +86,31 @@ const getItems = (count: any, offset = 0) =>
 export default function TempBoardContextProvider(
   props: TempBoardContextProviderProps
 ) {
-  const [curActivityIdx, setCurActivityIdx] = useState(1);
+  const [curActivityIdx, setCurActivityIdx] = useState(0);
+  const current_activity = activities[curActivityIdx];
+
+  const stickyIdToSticky = useMemo(() => {
+    if (!current_activity) {
+      return {};
+    }
+
+    return current_activity.stickies.reduce((map, sticky) => {
+      map[sticky.id] = sticky;
+      return map;
+    }, {} as { [key: string]: Sticky });
+  }, [current_activity]);
 
   const value = useMemo(() => {
     return {
       user_id: 1,
       activities: activities,
       current_activity: activities[curActivityIdx],
+      stickyIdToSticky,
+      board: {
+        owner_id: 0,
+        title: "This is my board title",
+        description: "This is my board description",
+      },
     };
   }, []);
 

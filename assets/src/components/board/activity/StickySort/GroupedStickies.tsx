@@ -2,9 +2,10 @@ import classNames from "classnames";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import DraggableSticky from "src/components/board/activity/StickySort/DraggableSticky";
 import { getStickyColor } from "src/components/board/activity/StickySort/stickyColors";
 
-interface WokeProps {
+interface GroupedStickiesProps {
   className?: string;
   activity_groups: ActivityGroup[];
   stickyIdToSticky: {
@@ -49,7 +50,7 @@ const move = (
   return result;
 };
 
-export default function QuoteApp(props: WokeProps) {
+export default function GroupedStickies(props: GroupedStickiesProps) {
   const [state, setState] = useState([getItems(10), getItems(5, 10)]);
   console.log("THOMASSS", props);
   // function onDragEnd(result: any) {
@@ -100,7 +101,6 @@ export default function QuoteApp(props: WokeProps) {
         Add new item
       </button>
       <div className={"flex items-start w-fit mb-52 gap-4"}>
-        {/*<DragDropContext onDragEnd={onDragEnd}>*/}
         {props.activity_groups.map((activity_group, ind) => (
           <Droppable key={ind} droppableId={`${ind}`}>
             {(provided: any, snapshot: any) => (
@@ -123,40 +123,13 @@ export default function QuoteApp(props: WokeProps) {
                 </div>
                 {activity_group.sticky_ids.map((sticky_id, index) => (
                   <>
-                    {console.log("TOM", {
-                      activity_group,
-                      sticky_id,
-                      nuts: props.stickyIdToSticky,
-                    })}
                     {sticky_id in props.stickyIdToSticky && (
-                      <Draggable
-                        key={`sticky-${sticky_id}`}
-                        draggableId={`sticky-${sticky_id}`}
+                      <DraggableSticky
+                        sticky_id={sticky_id}
+                        text={props.stickyIdToSticky[sticky_id].text}
                         index={index}
-                      >
-                        {(provided: any, snapshot: any) => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            style={provided.draggableProps.style}
-                            className={
-                              "select-none bg-sticky mb-2 shadow-sm rounded-lg"
-                            }
-                          >
-                            <div
-                              className={
-                                "flex items-center text-gray-600 font-medium px-3 py-2 border-b border-b-[#92400E]/[0.1]"
-                              }
-                            >
-                              {props.stickyIdToSticky[sticky_id].text}
-                            </div>
-                            <div className={"px-3 py-2 text-gray-400 text-sm"}>
-                              {`user: ${props.stickyIdToSticky[sticky_id].user_id}`}
-                            </div>
-                          </div>
-                        )}
-                      </Draggable>
+                        user={`user: ${props.stickyIdToSticky[sticky_id].user_id}`}
+                      />
                     )}
                   </>
                 ))}
@@ -165,7 +138,6 @@ export default function QuoteApp(props: WokeProps) {
             )}
           </Droppable>
         ))}
-        {/*</DragDropContext>*/}
       </div>
     </div>
   );

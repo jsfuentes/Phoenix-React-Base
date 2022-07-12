@@ -11,7 +11,8 @@ export type ButtonVariantOptions =
   | "tertiary" // black bg with white txt
   | "danger" //red bg and white txt
   | "google" // blue bg;
-  | "green"; // green bg with white text;
+  | "sticky" // amber bg with white text;
+  | "lightgray"; // light gray bg with white text;
 
 interface ButtonProps {
   size: ButtonSizeOptions;
@@ -51,11 +52,12 @@ export default function Button(props: ButtonProps) {
       props.variant === "reverse-primary",
     "text-black bg-gray-50 hover:bg-gray-100 border border-gray-300 ":
       props.variant === "secondary",
-    "text-white bg-gray-800 border-none": props.variant === "tertiary",
+    "text-white bg-gray-600 border-none": props.variant === "tertiary",
     "text-white bg-red-700 border border-transparent":
       props.variant === "danger",
     "bg-[#4285F4] text-white": props.variant === "google",
-    "bg-green-800 text-white": props.variant === "green",
+    "bg-amber-700 text-white": props.variant === "sticky",
+    "bg-gray-400 text-white": props.variant === "lightgray",
   });
 
   //TODO: Add icon not icon styling to rest of sizes, needs extra vertical padding so all buttons are same height

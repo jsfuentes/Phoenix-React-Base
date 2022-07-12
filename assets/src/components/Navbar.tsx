@@ -6,6 +6,7 @@ const debug = require("debug")("app:Navbar");
 
 interface NavbarProps {
   children?: React.ReactNode;
+  left?: React.ReactNode;
   center?: React.ReactNode;
   bottom?: React.ReactNode;
   className?: string;
@@ -39,7 +40,7 @@ export default function Navbar(props: NavbarProps) {
       className={classNames({
         "flex items-center justify-between flex-none w-full transition duration-100 ease-in-out":
           true,
-        "z-100 sticky top-0 left-0 text-black bg-transparent h-16 border-b border-transparent ease-in-out px-4":
+        "z-100 sticky top-0 left-0 text-black bg-transparent h-16 border-b border-transparent ease-in-out px-2":
           true,
         [props.className || ""]: props.className,
       })}
@@ -50,12 +51,8 @@ export default function Navbar(props: NavbarProps) {
       }}
     >
       <div className="flex flex-col w-full gap-1">
-        <div
-          className={`flex items-center justify-between w-full container mx-auto`}
-        >
-          <div className="flex-1">
-            <Logo />
-          </div>
+        <div className={`flex items-center justify-between w-full`}>
+          <div className="flex-1">{props.left}</div>
           {props.center}
           <div className="text-right flex-1">{props.children}</div>
         </div>

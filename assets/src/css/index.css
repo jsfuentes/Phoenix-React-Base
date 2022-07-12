@@ -14,5 +14,13 @@ code {
     monospace;
 }
 
+.modal {
+  z-index: 10001;
+  max-height: 100%;
+  outline: none !important;
+  @apply relative shadow bg-white;
+}
+
+
 @tailwind components;
 @tailwind utilities;
