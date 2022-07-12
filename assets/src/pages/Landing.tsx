@@ -1,14 +1,21 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { axios } from "src/api/axios";
+import BoardService from "src/api/BoardService";
 import Button from "src/components/Button";
 import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
+import UserContext from "src/contexts/UserContext";
+import { useAppDispatch } from "src/redux/hooks";
+import { logMessage } from "src/redux/notification";
 const debug = require("debug")("app:Landing");
 
 export default function Landing() {
+  const { user } = useContext(UserContext);
   const [resp, setResp] = useState("");
+  let navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     axios
       .get("/api")
@@ -20,6 +27,26 @@ export default function Landing() {
         console.error(error);
       });
   }, []);
+
+  const goToNewBoard = useCallback(async () => {
+    debug("GO1");
+    if (!user?.id) {
+      dispatch(
+        logMessage("Somehow doesn't have user in goToNewBoard", {
+          toastMessage: "You need to be logged in to create a board",
+        })
+      );
+      return;
+    }
+
+    debug("GO2");
+    try {
+      const board = await BoardService.createDefaultBoard(user?.id);
+      navigate(`/b/${board.id}`);
+    } catch (err) {
+      debug("Go to board on dashboard failed");
+    }
+  }, [dispatch, user?.id]);
 
   return (
     <>
@@ -38,8 +65,9 @@ export default function Landing() {
             <div className="bx bx-rocket animate-wiggle text-black mx-1" />{" "}
             Welcome to React Base BB
           </div>
-          <Button onClick={() => toast.warn("Alert it up in herrrreee")}>
-            Useless Button
+          <Button onClick={goToNewBoard}>
+            Start Brainstorming Together
+            <i className="bx bx-right-arrow-alt ml-1" />
           </Button>
           <div className="text-2xl font-bold my-4">
             {resp ? `The Server Says "${resp}"` : "The Server Can't Be Reached"}

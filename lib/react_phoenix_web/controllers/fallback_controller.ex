@@ -9,6 +9,7 @@ defmodule ReactPhoenixWeb.FallbackController do
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     Logger.error("ApiFallbackController unprocessable", extra: %{changeset: inspect(changeset)})
+    IO.inspect(changeset)
 
     conn
     |> put_status(:unprocessable_entity)

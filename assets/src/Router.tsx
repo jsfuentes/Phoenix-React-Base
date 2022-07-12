@@ -60,6 +60,7 @@ export default function Router() {
                 <Routes>
                   <Route path="/" element={<Landing />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/b/:board_id" element={<Dashboard />} />
 
                   {/* Redirect doesn't work on external links, https://stackoverflow.com/questions/42914666/react-router-external-link */}
                   <Route

@@ -48,7 +48,8 @@ defmodule ReactPhoenixWeb.Router do
     get "/", ApiController, :index
     post "/join", ApiController, :join
     post "/users/me", UserController, :me
-    resources "/users", UserController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit, :index, :delete]
+    resources "/boards", BoardController, except: [:new, :edit, :index, :delete]
   end
 
   scope "/", ReactPhoenixWeb do

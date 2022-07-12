@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/react";
 import { nanoid } from "nanoid";
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import AuthService from "src/api/AuthService";
 import { axios } from "src/api/axios";
 import UserContext from "src/contexts/UserContext";
 import UserStatusProvider from "src/contexts/UserStatusProvider";
@@ -30,12 +31,10 @@ export default function UserProvider(props: UserProviderProps) {
 
     //2 Server assigns identity and sets session
     try {
-      const resp = await axios.post("/api/users/me", { user: clientUserGuess });
-      const newUser = resp.data.data;
+      const newUser = await AuthService.guessMe(clientUserGuess);
       return newUser;
     } catch (err) {
-      toast.error("Fetching user failed");
-      console.error("Fetching user");
+      return null;
     }
   }, []);
 
