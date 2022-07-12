@@ -35,7 +35,10 @@ defmodule ReactPhoenix.Boards do
       ** (Ecto.NoResultsError)
 
   """
-  def get_board!(id), do: Repo.get!(Board, id)
+  def get_board!(id) do
+    Repo.get!(Board, id)
+    |> Repo.preload(:activities)
+  end
 
   @doc """
   Creates a board.
@@ -52,6 +55,9 @@ defmodule ReactPhoenix.Boards do
   def create_board(attrs \\ %{}) do
     %Board{}
     |> Board.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:activities,
+      with: &ReactPhoenix.Activities.Activity.changeset/2
+    )
     |> Repo.insert()
   end
 
@@ -70,6 +76,9 @@ defmodule ReactPhoenix.Boards do
   def update_board(%Board{} = board, attrs) do
     board
     |> Board.changeset(attrs)
+    |> Ecto.Changeset.cast_assoc(:activities,
+      with: &ReactPhoenix.Activities.Activity.changeset/2
+    )
     |> Repo.update()
   end
 

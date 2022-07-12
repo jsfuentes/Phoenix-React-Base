@@ -8,7 +8,7 @@ export interface SocketContextType {
     | ((
         board_id: string,
         payload: {
-          userStatusR: React.MutableRefObject<Partial<UserStatusState>>;
+          userStatusR: React.MutableRefObject<Partial<UserStatusState>> | null;
         }
       ) => Promise<{ channel: Channel; presence: Presence }>);
 }

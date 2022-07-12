@@ -1,12 +1,11 @@
+import * as Sentry from "@sentry/react";
 import { Channel, Presence } from "phoenix";
 import React, { useContext, useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Loading from "src/components/Loading";
 import SocketContext from "src/contexts/SocketContext";
 import UserStatusContext from "src/contexts/UserStatusContext";
-// import { updatePresence } from "src/redux/presence";
-import * as Sentry from "@sentry/react";
-// import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useAppDispatch } from "src/redux/hooks";
 import { PresenceList, updatePresence } from "src/redux/presence";
 import { updateSelf } from "src/redux/userStatus";
@@ -19,9 +18,8 @@ interface BoardProviderProps {
 }
 
 export default function BoardProvider(props: BoardProviderProps) {
-  // const params = useParams<{ id: string }>();
-  // const board_id = params.id || "test";
-  const board_id = "test";
+  const params = useParams<{ board_id: string }>();
+  const board_id = params.board_id || "test";
   const { user } = useContext(UserContext);
   const { userStatusR, setUpdateChannel } = useContext(UserStatusContext);
   const { joinBoardChannel } = useContext(SocketContext);
@@ -68,7 +66,7 @@ export default function BoardProvider(props: BoardProviderProps) {
         setUpdateChannel && setUpdateChannel(null);
       }
     };
-  }, [joinBoardChannel]);
+  }, [joinBoardChannel, board_id, dispatch, setUpdateChannel, userStatusR]);
 
   //   useEffect(() => {
   //     if (boardChannel) {

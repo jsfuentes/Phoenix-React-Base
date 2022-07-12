@@ -7,6 +7,7 @@ defmodule ReactPhoenix.Boards.Board do
     field :description, :string
     field :title, :string
     belongs_to :owner, ReactPhoenix.Accounts.User, type: :string
+    has_many :activities, ReactPhoenix.Activities.Activity
 
     timestamps()
   end
