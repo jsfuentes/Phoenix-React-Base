@@ -6,6 +6,10 @@ import { getStickyColor } from "src/components/board/activity/StickySort/stickyC
 
 interface WokeProps {
   className?: string;
+  activity_groups: ActivityGroup[];
+  stickyIdToSticky: {
+    [key: string]: Sticky;
+  };
 }
 
 // fake data generator
@@ -44,60 +48,34 @@ const move = (
 
   return result;
 };
-const grid = 8;
-
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-const getListStyle = (isDraggingOver: any) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  padding: grid,
-  width: 250,
-  height: 400,
-});
-const getListClass = (isDraggingOver: any) => ({
-  background: isDraggingOver ? "lightblue" : "lightgrey",
-  padding: grid,
-  width: 250,
-  height: 400,
-});
 
 export default function QuoteApp(props: WokeProps) {
   const [state, setState] = useState([getItems(10), getItems(5, 10)]);
-
-  function onDragEnd(result: any) {
-    const { source, destination } = result;
-
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-    const sInd = +source.droppableId;
-    const dInd = +destination.droppableId;
-
-    if (sInd === dInd) {
-      const items = reorder(state[sInd], source.index, destination.index);
-      const newState: any = [...state];
-      newState[sInd] = items;
-      setState(newState);
-    } else {
-      const result = move(state[sInd], state[dInd], source, destination);
-      const newState = [...state];
-      newState[sInd] = result[sInd];
-      newState[dInd] = result[dInd];
-
-      setState(newState.filter((group) => group.length));
-    }
-  }
+  console.log("THOMASSS", props);
+  // function onDragEnd(result: any) {
+  //   const { source, destination } = result;
+  //
+  //   // dropped outside the list
+  //   if (!destination) {
+  //     return;
+  //   }
+  //   const sInd = +source.droppableId;
+  //   const dInd = +destination.droppableId;
+  //
+  //   if (sInd === dInd) {
+  //     const items = reorder(state[sInd], source.index, destination.index);
+  //     const newState: any = [...state];
+  //     newState[sInd] = items;
+  //     setState(newState);
+  //   } else {
+  //     const result = move(state[sInd], state[dInd], source, destination);
+  //     const newState = [...state];
+  //     newState[sInd] = result[sInd];
+  //     newState[dInd] = result[dInd];
+  //
+  //     setState(newState.filter((group) => group.length));
+  //   }
+  // }
 
   return (
     <div
@@ -122,54 +100,72 @@ export default function QuoteApp(props: WokeProps) {
         Add new item
       </button>
       <div className={"flex items-start w-fit mb-52 gap-4"}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {state.map((el, ind) => (
-            <Droppable key={ind} droppableId={`${ind}`}>
-              {(provided: any, snapshot: any) => (
+        {/*<DragDropContext onDragEnd={onDragEnd}>*/}
+        {props.activity_groups.map((activity_group, ind) => (
+          <Droppable key={ind} droppableId={`${ind}`}>
+            {(provided: any, snapshot: any) => (
+              <div
+                ref={provided.innerRef}
+                className={classNames({
+                  [`w-64 min-h-0 p-3 rounded-md bg-${getStickyColor(ind)}-100`]:
+                    true,
+                })}
+                {...provided.droppableProps}
+              >
                 <div
-                  ref={provided.innerRef}
-                  className={classNames({
-                    [`w-64 min-h-0 p-3 rounded-md ${getStickyColor(ind)}`]:
-                      true,
-                  })}
-                  {...provided.droppableProps}
+                  className={`bg-${getStickyColor(
+                    ind
+                  )}-200 inline-block rounded-2xl py-1 px-3 mb-3 font-medium text-${getStickyColor(
+                    ind
+                  )}-800`}
                 >
-                  {el.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(provided: any, snapshot: any) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={provided.draggableProps.style}
-                          className={
-                            "select-none bg-white mb-2 shadow-sm rounded-lg"
-                          }
-                        >
+                  {activity_group.title}
+                </div>
+                {activity_group.sticky_ids.map((sticky_id, index) => (
+                  <>
+                    {console.log("TOM", {
+                      activity_group,
+                      sticky_id,
+                      nuts: props.stickyIdToSticky,
+                    })}
+                    {sticky_id in props.stickyIdToSticky && (
+                      <Draggable
+                        key={`sticky-${sticky_id}`}
+                        draggableId={`sticky-${sticky_id}`}
+                        index={index}
+                      >
+                        {(provided: any, snapshot: any) => (
                           <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={provided.draggableProps.style}
                             className={
-                              "flex items-center text-gray-600 font-medium px-3 py-2 border-b border-b-gray-100"
+                              "select-none bg-sticky mb-2 shadow-sm rounded-lg"
                             }
                           >
-                            {item.content}
+                            <div
+                              className={
+                                "flex items-center text-gray-600 font-medium px-3 py-2 border-b border-b-[#92400E]/[0.1]"
+                              }
+                            >
+                              {props.stickyIdToSticky[sticky_id].text}
+                            </div>
+                            <div className={"px-3 py-2 text-gray-400 text-sm"}>
+                              {`user: ${props.stickyIdToSticky[sticky_id].user_id}`}
+                            </div>
                           </div>
-                          <div className={"px-3 py-2 text-gray-400 text-sm"}>
-                            Thomas
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
+                        )}
+                      </Draggable>
+                    )}
+                  </>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        ))}
+        {/*</DragDropContext>*/}
       </div>
     </div>
   );

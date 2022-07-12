@@ -1,7 +1,8 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useContext } from "react";
 import StickySort from "src/components/board/activity/StickySort";
 import StickyNoteInput from "src/components/board/StickyNoteInput";
+import TempBoardContext from "src/contexts/TempBoardContext";
 
 interface ActiveBoardProps {
   className?: string;

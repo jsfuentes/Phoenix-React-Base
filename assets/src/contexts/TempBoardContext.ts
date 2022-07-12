@@ -1,12 +1,16 @@
 import React from "react";
 
 export interface TempBoardContextContextType {
-  foo: string;
+  current_activity: Activity | null;
+  activities: Activity[];
+  user_id: number;
 }
 
 const TempBoardContextContext =
   React.createContext<TempBoardContextContextType>({
-    foo: "bar",
+    current_activity: null,
+    activities: [],
+    user_id: 0,
   });
 
 export default TempBoardContextContext;
