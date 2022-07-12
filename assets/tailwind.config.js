@@ -20,6 +20,7 @@ module.exports = {
       colors: {
         white: "#ffffff",
         black: "#000000",
+        sticky: "#FEEFB4",
         primary: {
           50: "#F5F5FF",
           100: "#eeebfe",

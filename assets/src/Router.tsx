@@ -8,7 +8,9 @@ import MyRedirect from "src/components/MyRedirect";
 import UserRoute from "src/components/UserRoute";
 import SocketProvider from "src/contexts/SocketProvider";
 import UserProvider from "src/contexts/UserProvider";
+import Board from "src/pages/Board";
 import { store } from "src/redux/store";
+//These Routers will lazyload its children
 import { componentLoader } from "src/utils/helpers";
 const debug = require("debug")("app:Router");
 
@@ -60,7 +62,8 @@ export default function Router() {
                 <Routes>
                   <Route path="/" element={<Landing />} />
                   <Route path="/login" element={<Login />} />
-                  <Route path="/b/:board_id" element={<Dashboard />} />
+                  <Route path="/b/:board_id" element={<Board />} />
+                  <Route path="/board" element={<Board />} />
 
                   {/* Redirect doesn't work on external links, https://stackoverflow.com/questions/42914666/react-router-external-link */}
                   <Route
