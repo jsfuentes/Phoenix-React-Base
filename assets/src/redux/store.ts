@@ -1,5 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+import boardReducer from "./board";
 import notificationReducer from "./notification";
 import presenceReducer from "./presence";
 import userStatusReducer from "./userStatus";
@@ -8,6 +9,7 @@ const rootReducer = combineReducers({
   userStatus: userStatusReducer,
   presence: presenceReducer,
   notification: notificationReducer,
+  board: boardReducer,
 });
 
 export const store = configureStore({

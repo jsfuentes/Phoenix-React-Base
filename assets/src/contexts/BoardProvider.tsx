@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import Loading from "src/components/Loading";
 import SocketContext from "src/contexts/SocketContext";
 import UserStatusContext from "src/contexts/UserStatusContext";
+import { updateBoard } from "src/redux/board";
 import { useAppDispatch } from "src/redux/hooks";
 import { PresenceList, updatePresence } from "src/redux/presence";
 import { updateSelf } from "src/redux/userStatus";
@@ -76,6 +77,7 @@ export default function BoardProvider(props: BoardProviderProps) {
 
   const updateBoardState = useCallback((boardState: BoardState) => {
     debug("new board state", boardState);
+    dispatch(updateBoard(boardState));
   }, []);
 
   useEffect(() => {

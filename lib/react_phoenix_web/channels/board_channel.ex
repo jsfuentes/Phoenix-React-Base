@@ -86,6 +86,8 @@ defmodule ReactPhoenixWeb.BoardChannel do
     Map.merge(viewed_board, %{schedule_state: schedule_state})
   end
 
+  # TODO: One day, all messages should be in redux form and sent as payloads to backend which 1) updates db and 2) sends to all clients
+
   # # Channels can be used in a request/response fashion
   # # by sending replies to requests from the client
   # @impl true

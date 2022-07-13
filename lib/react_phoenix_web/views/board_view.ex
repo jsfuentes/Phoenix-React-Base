@@ -12,15 +12,39 @@ defmodule ReactPhoenixWeb.BoardView do
   end
 
   def render("board.json", %{board: board}) do
-    sortedActivities =
-      if Ecto.assoc_loaded?(board.activities),
-        do: Enum.sort_by(board.activities, & &1.order),
-        else: []
+    activities =
+      if Ecto.assoc_loaded?(board.activities) do
+        sorted_activities =
+          Enum.sort_by(board.activities, & &1.order)
+          |> render_many(BoardView, "activity.json", as: :activity)
 
-    sortedStickies =
-      if Ecto.assoc_loaded?(board.stickies),
-        do: Enum.sort_by(board.stickies, & &1.inserted_at),
-        else: []
+        %{
+          byId:
+            Enum.reduce(sorted_activities, %{}, fn activity, acc ->
+              Map.put(acc, activity.id, activity)
+            end),
+          allIds: Enum.map(sorted_activities, & &1.id)
+        }
+      else
+        []
+      end
+
+    stickies =
+      if Ecto.assoc_loaded?(board.stickies) do
+        sorted_stickies =
+          Enum.sort_by(board.stickies, & &1.inserted_at)
+          |> render_many(BoardView, "sticky.json", as: :sticky)
+
+        %{
+          byId:
+            Enum.reduce(sorted_stickies, %{}, fn sticky, acc ->
+              Map.put(acc, sticky.id, sticky)
+            end),
+          allIds: Enum.map(sorted_stickies, & &1.id)
+        }
+      else
+        []
+      end
 
     %{
       id: board.id,
@@ -29,8 +53,8 @@ defmodule ReactPhoenixWeb.BoardView do
       owner_id: board.owner_id,
       inserted_at: board.inserted_at,
       updated_at: board.updated_at,
-      activites: render_many(sortedActivities, BoardView, "activity.json", as: :activity),
-      stickies: render_many(sortedStickies, BoardView, "sticky.json", as: :sticky)
+      activities: activities,
+      stickies: stickies
     }
   end
 
