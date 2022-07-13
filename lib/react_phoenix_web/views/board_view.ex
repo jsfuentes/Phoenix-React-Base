@@ -47,12 +47,14 @@ defmodule ReactPhoenixWeb.BoardView do
       end
 
     %{
-      id: board.id,
-      title: board.title,
-      description: board.description,
-      owner_id: board.owner_id,
-      inserted_at: board.inserted_at,
-      updated_at: board.updated_at,
+      board: %{
+        id: board.id,
+        title: board.title,
+        description: board.description,
+        owner_id: board.owner_id,
+        inserted_at: board.inserted_at,
+        updated_at: board.updated_at
+      },
       activities: activities,
       stickies: stickies
     }

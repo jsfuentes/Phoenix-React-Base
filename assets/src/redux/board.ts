@@ -23,6 +23,8 @@ const boardSlice = createSlice({
       //TODO: Check that Object.keys() and the action.payload are in the same order if unchanged(does isEqual on the arrays)
       debug("ACTION PAYLOAD", action.payload);
 
+      state.board = action.payload.board;
+
       // ACTIVITIES UPDATE
       //Set new objects only on changes
       const allActivitesByIds = union(
@@ -46,7 +48,7 @@ const boardSlice = createSlice({
         state.activities.allIds = action.payload.activities.allIds;
       }
 
-      // ACTIVITIES UPDATE
+      // STICKIES UPDATE
       //Set new objects only on changes
       const allStickiesById = union(
         Object.keys(state.stickies.byId),
