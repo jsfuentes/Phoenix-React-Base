@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import Crazy8Activity from "src/components/board/activity/Crazy8Activity";
 import StickySort from "src/components/board/activity/StickySort";
 import VoteActivity from "src/components/board/activity/VoteActivity";
+import VoteResultsActivity from "src/components/board/activity/VoteResultsActivity";
 import StickyNoteInput from "src/components/board/StickyNoteInput";
 import TempBoardContext from "src/contexts/TempBoardContext";
 
@@ -24,6 +25,9 @@ export default function ActiveBoard(props: ActiveBoardProps) {
       break;
     case "upvote":
       activity = <VoteActivity />;
+      break;
+    case "vote_results":
+      activity = <VoteResultsActivity />;
       break;
     default:
       activity = <></>;

@@ -12,7 +12,8 @@ export type ButtonVariantOptions =
   | "danger" //red bg and white txt
   | "google" // blue bg;
   | "sticky" // amber bg with white text;
-  | "lightgray"; // light gray bg with white text;
+  | "lightgray" // light gray bg with white text;
+  | "inverse-lightgray"; // light gray border with light gray text;
 
 interface ButtonProps {
   size: ButtonSizeOptions;
@@ -57,7 +58,9 @@ export default function Button(props: ButtonProps) {
       props.variant === "danger",
     "bg-[#4285F4] text-white": props.variant === "google",
     "bg-amber-700 text-white": props.variant === "sticky",
-    "bg-gray-400 text-white": props.variant === "lightgray",
+    "bg-gray-400 text-white ": props.variant === "lightgray",
+    "border-2 border-gray-400 text-gray-400":
+      props.variant === "inverse-lightgray",
   });
 
   //TODO: Add icon not icon styling to rest of sizes, needs extra vertical padding so all buttons are same height

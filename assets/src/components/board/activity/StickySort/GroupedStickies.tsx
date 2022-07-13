@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DraggableSticky from "src/components/board/activity/StickySort/DraggableSticky";
-import { getStickyColor } from "src/components/board/activity/StickySort/stickyColors";
+import { getStickyColor } from "src/components/board/activity/stickyColors";
 
 interface GroupedStickiesProps {
   className?: string;
@@ -52,7 +52,6 @@ const move = (
 
 export default function GroupedStickies(props: GroupedStickiesProps) {
   const [state, setState] = useState([getItems(10), getItems(5, 10)]);
-  console.log("THOMASSS", props);
   // function onDragEnd(result: any) {
   //   const { source, destination } = result;
   //
@@ -77,7 +76,8 @@ export default function GroupedStickies(props: GroupedStickiesProps) {
   //     setState(newState.filter((group) => group.length));
   //   }
   // }
-
+  // TODO: overflow when many stickies in one column
+  // TODO: overflow horizontal scroll (DONE)
   return (
     <div
       className={classNames({

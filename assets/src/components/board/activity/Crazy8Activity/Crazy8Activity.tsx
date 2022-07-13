@@ -1,6 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import ActivityHeader from "src/components/board/activity/ActivityHeader";
 import CompletedStickies from "src/components/board/activity/Crazy8Activity/CompletedStickies";
+import Crazy8RightBar from "src/components/board/activity/Crazy8Activity/Crazy8RightBar";
 import StickyNoteInput from "src/components/board/StickyNoteInput";
 import TempBoardContext from "src/contexts/TempBoardContext";
 
@@ -45,13 +46,18 @@ export default function Crazy8Activity(props: Crazy8ActivityProps) {
         />
 
         {selectedUserActivityGroup && (
-          <div className={"flex gap-4 p-6 flex-1 overflow-x-auto min-w-0"}>
-            {selectedUser === user_id && (
-              <StickyNoteInput fullRounding={true} />
-            )}
-            <CompletedStickies
-              stickyIdToSticky={stickyIdToSticky}
-              selectedUserActivityGroup={selectedUserActivityGroup}
+          <div className={"flex  flex-1 overflow-x-auto min-w-0"}>
+            <div className={"flex-1 flex gap-4 p-6"}>
+              {selectedUser === user_id && (
+                <StickyNoteInput fullRounding={true} />
+              )}
+              <CompletedStickies
+                stickyIdToSticky={stickyIdToSticky}
+                selectedUserActivityGroup={selectedUserActivityGroup}
+              />
+            </div>
+            <Crazy8RightBar
+              activity_groups={current_activity.activity_groups}
             />
           </div>
         )}

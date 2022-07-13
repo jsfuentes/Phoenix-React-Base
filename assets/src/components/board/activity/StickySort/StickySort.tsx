@@ -3,7 +3,7 @@ import React, { useContext, useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import ActivityHeader from "src/components/board/activity/ActivityHeader";
 import GroupedStickies from "src/components/board/activity/StickySort/GroupedStickies";
-import { getStickyColor } from "src/components/board/activity/StickySort/stickyColors";
+import { getStickyColor } from "src/components/board/activity/stickyColors";
 import UncategorizedStickies from "src/components/board/activity/StickySort/UncategorizedStickies";
 import StickyNoteInput from "src/components/board/StickyNoteInput";
 import TempBoardContext from "src/contexts/TempBoardContext";
@@ -31,7 +31,10 @@ export default function StickySort(props: StickySortProps) {
                 className="flex-1 min-w-0 h-full overflow-auto p-10"
               />
               <UncategorizedStickies />
-              <StickyNoteInput className="absolute mx-auto bottom-0 left-0 right-0" />
+              <StickyNoteInput
+                className="absolute mx-auto bottom-0 left-0 right-0"
+                activityGroup={current_activity.activity_groups[0]}
+              />
             </div>
           </DragDropContext>
         </div>

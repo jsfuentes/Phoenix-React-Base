@@ -8,6 +8,7 @@ interface TempBoardContextProviderProps {
 const activities: Activity[] = [
   {
     id: 1,
+    order: 0,
     title: "Generate Ideas",
     description: "Generate ideas for your board",
     type: "crazy8",
@@ -43,9 +44,83 @@ const activities: Activity[] = [
   },
   {
     id: 2,
+    order: 1,
+
     title: "Sticky Sort",
     description: "Sort your board",
     type: "theme_sort",
+    stickies: [
+      {
+        id: 1,
+        text: "This is sticky 1",
+        user_id: 1,
+      },
+      {
+        id: 2,
+        text: "This is sticky 2",
+        user_id: 2,
+      },
+      {
+        id: 3,
+        text: "This is sticky 3",
+        user_id: 1,
+      },
+    ],
+    activity_groups: [
+      {
+        title: "Category 1",
+        sticky_ids: [1],
+      },
+      {
+        title: "Category 2",
+        sticky_ids: [2, 3],
+      },
+    ],
+  },
+  {
+    id: 3,
+    order: 2,
+
+    title: "Vote on ideas anonymously",
+    description:
+      "Democratically make decisions as a group without being led by one individual. Blind voting neutralises dominating personailities or opinions in the decisiong making process.",
+    type: "upvote",
+    stickies: [
+      {
+        id: 1,
+        text: "This is sticky 1",
+        user_id: 1,
+      },
+      {
+        id: 2,
+        text: "This is sticky 2",
+        user_id: 2,
+      },
+      {
+        id: 3,
+        text: "This is sticky 3",
+        user_id: 1,
+      },
+    ],
+    activity_groups: [
+      {
+        title: "Category 1",
+        sticky_ids: [1],
+      },
+      {
+        title: "Category 2",
+        sticky_ids: [2, 3],
+      },
+    ],
+  },
+  {
+    id: 4,
+    order: 3,
+
+    title: "View voting results",
+    description:
+      "Democratically make decisions as a group without being led by one individual. Blind voting neutralises dominating personailities or opinions in the decisiong making process.",
+    type: "vote_results",
     stickies: [
       {
         id: 1,
@@ -86,7 +161,7 @@ const getItems = (count: any, offset = 0) =>
 export default function TempBoardContextProvider(
   props: TempBoardContextProviderProps
 ) {
-  const [curActivityIdx, setCurActivityIdx] = useState(0);
+  const [curActivityIdx, setCurActivityIdx] = useState(3);
   const current_activity = activities[curActivityIdx];
 
   const stickyIdToSticky = useMemo(() => {
