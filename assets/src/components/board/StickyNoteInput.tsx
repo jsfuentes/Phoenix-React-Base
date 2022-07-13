@@ -30,6 +30,8 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
   const dispatch = useAppDispatch();
 
   const onSubmit = handleSubmit(async (data) => {
+    debug("Submit Sticky", data);
+
     if (!boardChannel) {
       dispatch(
         logErrorMessage(
@@ -39,11 +41,10 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
       return;
     }
 
-    debug("Submit Sticky", data);
-
     try {
       const resp = await pushChannelAsync(boardChannel, "add_sticky", {
-        title: data.note,
+        title: data.title,
+        description: data.description,
       });
       debug("add_sticky resp", resp);
     } catch (err) {
@@ -76,7 +77,7 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
           className="w-full text-gray-700 text-2xl font-medium block bg-transparent resize-none border-none focus:border-none focus:ring-transparent outline-none focus:outline-none placeholder-gray-700/[.40] py-1 px-3 rounded-md"
         />
         <textarea
-          {...register("description", { required: true })}
+          {...register("description")}
           placeholder={"Description (optional)"}
           className="w-full text-gray-700 font-medium block bg-transparent resize-none border-none focus:border-none focus:ring-transparent outline-none focus:outline-none placeholder-gray-700/[.40] py-1 px-3 rounded-md"
         />

@@ -1,6 +1,12 @@
 import * as Sentry from "@sentry/react";
 import { Channel, Presence } from "phoenix";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loading from "src/components/Loading";
@@ -19,7 +25,7 @@ interface BoardProviderProps {
 
 export default function BoardProvider(props: BoardProviderProps) {
   const params = useParams<{ board_id: string }>();
-  const board_id = params.board_id || "test";
+  const board_id = params.board_id;
   const { user } = useContext(UserContext);
   const { userStatusR, setUpdateChannel } = useContext(UserStatusContext);
   const { joinBoardChannel } = useContext(SocketContext);
@@ -55,7 +61,7 @@ export default function BoardProvider(props: BoardProviderProps) {
         updatePList(presence);
         setBoardChannel(channel);
         setUpdateChannel && setUpdateChannel(channel);
-        window.inevent = channel;
+        // window.inevent = channel;
       })();
     }
 
@@ -68,12 +74,16 @@ export default function BoardProvider(props: BoardProviderProps) {
     };
   }, [joinBoardChannel, board_id, dispatch, setUpdateChannel, userStatusR]);
 
-  //   useEffect(() => {
-  //     if (boardChannel) {
-  //         boardChannel.on("new_event_group", updateEventGroup);
-  //       return () => boardChannel.off("new_event_group");
-  //     }
-  //   }, [boardChannel, updateEventGroup]);
+  const updateBoardState = useCallback((boardState: BoardState) => {
+    debug("new board state", boardState);
+  }, []);
+
+  useEffect(() => {
+    if (boardChannel) {
+      boardChannel.on("board_state", updateBoardState);
+      return () => boardChannel.off("get_board_state");
+    }
+  }, [boardChannel, updateBoardState]);
 
   useEffect(
     function syncAttendeeInfo() {

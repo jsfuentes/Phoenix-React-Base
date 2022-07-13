@@ -6,6 +6,7 @@ defmodule ReactPhoenixWeb.BoardChannel do
   alias ReactPhoenixWeb.Helpers.PresenceHelper
   alias ReactPhoenix.Stickies
   alias ReactPhoenix.Stickies.Sticky
+  alias ReactPhoenix.Dynamic.BoardSupervisor
 
   @impl true
   def join("board:" <> board_id, payload, socket) do
@@ -24,8 +25,9 @@ defmodule ReactPhoenixWeb.BoardChannel do
   @impl true
   def handle_info({:after_join, initial_status}, socket) do
     user_id = socket.assigns.user_id
+    board_id = socket.assigns.board_id
 
-    # PRESENCE
+    # CREATE AND SEND PRESENCE
     data =
       Map.merge(
         %{online_at: inspect(System.system_time(:second))},
@@ -35,6 +37,10 @@ defmodule ReactPhoenixWeb.BoardChannel do
     {:ok, _} = Presence.track(socket, user_id, data)
     pList = Presence.list(socket)
     push(socket, "presence_state", pList)
+
+    # CREATE AND SEND BOARD STATE
+    board_state = construct_board_state(board_id) |> IO.inspect()
+    push(socket, "board_state", board_state)
     {:noreply, socket}
   end
 
@@ -59,6 +65,25 @@ defmodule ReactPhoenixWeb.BoardChannel do
       })
 
     {:reply, :ok, socket}
+  end
+
+  @impl true
+  def handle_in("get_board_state", _payload, socket) do
+    user_id = socket.assigns.user_id
+    board_id = socket.assigns.board_id
+
+    board_state = construct_board_state(board_id) |> IO.inspect()
+    {:reply, {:ok, board_state}, socket}
+  end
+
+  def construct_board_state(board_id) do
+    board = ReactPhoenix.Boards.get_board!(board_id)
+    {:ok, %{schedule_state: schedule_state}} = BoardSupervisor.get_board_state(board_id)
+
+    viewed_board =
+      Phoenix.View.render_one(board, ReactPhoenixWeb.BoardView, "board.json", as: :board)
+
+    Map.merge(viewed_board, %{schedule_state: schedule_state})
   end
 
   # # Channels can be used in a request/response fashion

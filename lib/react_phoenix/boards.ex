@@ -38,6 +38,7 @@ defmodule ReactPhoenix.Boards do
   def get_board!(id) do
     Repo.get!(Board, id)
     |> Repo.preload(:activities)
+    |> Repo.preload(stickies: :user)
   end
 
   @doc """

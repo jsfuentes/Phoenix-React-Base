@@ -21,4 +21,13 @@ defmodule ReactPhoenixWeb.UserView do
       socket_token: Accounts.generate_socket_token(user)
     }
   end
+
+  def render("public.json", %{user: user}) do
+    %{
+      id: user.id,
+      name: user.name,
+      picture: user.picture,
+      type: user.type
+    }
+  end
 end

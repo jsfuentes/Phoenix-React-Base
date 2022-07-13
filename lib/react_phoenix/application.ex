@@ -16,7 +16,10 @@ defmodule ReactPhoenix.Application do
       {Phoenix.PubSub, name: ReactPhoenix.PubSub},
       # Start the Endpoint (http/https)
       ReactPhoenixWeb.Endpoint,
-      ReactPhoenixWeb.Presence
+      ReactPhoenixWeb.Presence,
+      # To create unique genservers per event
+      {Registry, keys: :unique, name: Registry.BoardGenServer},
+      ReactPhoenix.Dynamic.BoardSupervisor
       # Start a worker by calling: ReactPhoenix.Worker.start_link(arg)
       # {ReactPhoenix.Worker, arg}
     ]
