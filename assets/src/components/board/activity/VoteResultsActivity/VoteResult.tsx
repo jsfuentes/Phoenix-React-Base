@@ -1,9 +1,7 @@
-import React from "react";
 import { toast } from "react-toastify";
-import { getStickyColor } from "src/components/board/activity/stickyColors";
 
 interface VoteResultProps {
-  activityGroup: ActivityGroup;
+  stickyGroup: StickyGroup;
   sticky: Sticky;
   color: string;
 }
@@ -31,7 +29,7 @@ export default function VoteResult(props: VoteResultProps) {
         <div
           className={`self-start bg-${props.color}-200 inline-block rounded-2xl py-1 px-3 font-medium text-${props.color}-800`}
         >
-          {props.activityGroup.title}
+          {props.stickyGroup.title}
         </div>
       </div>
       <div

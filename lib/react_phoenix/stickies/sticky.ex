@@ -9,6 +9,9 @@ defmodule ReactPhoenix.Stickies.Sticky do
     belongs_to :user, ReactPhoenix.Accounts.User, type: :string
     belongs_to :board, ReactPhoenix.Boards.Board, type: :string
 
+    many_to_many :sticky_groups, ReactPhoenix.Stickies.StickyGroup,
+      join_through: ReactPhoenix.Stickies.StickyXGroup
+
     timestamps()
   end
 

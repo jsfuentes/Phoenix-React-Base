@@ -4,6 +4,6 @@ interface Activity {
   description?: string;
   type: "crazy8" | "theme_sort" | "upvote" | "vote_results";
   order: number;
-  activity_groups: ActivityGroup[];
+  activity_groups: StickyGroup[];
   stickies: Sticky[];
 }

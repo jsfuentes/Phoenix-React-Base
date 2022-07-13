@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import ActivityHeader from "src/components/board/activity/ActivityHeader";
 import CompletedStickies from "src/components/board/activity/Crazy8Activity/CompletedStickies";
 import Crazy8RightBar from "src/components/board/activity/Crazy8Activity/Crazy8RightBar";
@@ -26,7 +26,7 @@ export default function Crazy8Activity(props: Crazy8ActivityProps) {
       }));
   }, []); // TODO add eslint and fix this
 
-  const selectedUserActivityGroup = useMemo(() => {
+  const selectedUserStickyGroup = useMemo(() => {
     return current_activity.activity_groups.find((activity) => {
       return activity.user_id === selectedUser;
     });
@@ -45,7 +45,7 @@ export default function Crazy8Activity(props: Crazy8ActivityProps) {
           }}
         />
 
-        {selectedUserActivityGroup && (
+        {selectedUserStickyGroup && (
           <div className={"flex  flex-1 overflow-x-auto min-w-0"}>
             <div className={"flex-1 flex gap-4 p-6"}>
               {selectedUser === user_id && (
@@ -53,7 +53,7 @@ export default function Crazy8Activity(props: Crazy8ActivityProps) {
               )}
               <CompletedStickies
                 stickyIdToSticky={stickyIdToSticky}
-                selectedUserActivityGroup={selectedUserActivityGroup}
+                selectedUserStickyGroup={selectedUserStickyGroup}
               />
             </div>
             <Crazy8RightBar

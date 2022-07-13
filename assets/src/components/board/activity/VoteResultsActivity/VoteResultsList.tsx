@@ -1,10 +1,9 @@
-import React from "react";
 import { getStickyColor } from "src/components/board/activity/stickyColors";
 import VoteResult from "src/components/board/activity/VoteResultsActivity/VoteResult";
 import Button from "src/components/Button";
 
 interface VoteResultsListProps {
-  activityGroups: ActivityGroup[];
+  stickyGroups: StickyGroup[];
   stickyIdToSticky: { [stickyId: string]: Sticky };
 }
 
@@ -17,14 +16,14 @@ export default function VoteResultsList(props: VoteResultsListProps) {
           Copy All
         </Button>
       </div>
-      {props.activityGroups.map((activityGroup, index1) => {
-        return activityGroup.sticky_ids.map((stickyId, index2) => {
+      {props.stickyGroups.map((stickyGroup, index1) => {
+        return stickyGroup.sticky_ids.map((stickyId, index2) => {
           return (
             <>
               {stickyId in props.stickyIdToSticky && (
                 <VoteResult
                   key={stickyId}
-                  activityGroup={activityGroup}
+                  stickyGroup={stickyGroup}
                   sticky={props.stickyIdToSticky[stickyId]}
                   color={getStickyColor(index1)}
                 />

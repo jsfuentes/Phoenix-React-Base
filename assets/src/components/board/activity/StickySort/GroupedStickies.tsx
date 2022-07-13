@@ -1,13 +1,12 @@
 import classNames from "classnames";
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DraggableSticky from "src/components/board/activity/StickySort/DraggableSticky";
+import { useState } from "react";
+import { Droppable } from "react-beautiful-dnd";
 import { getStickyColor } from "src/components/board/activity/stickyColors";
+import DraggableSticky from "src/components/board/activity/StickySort/DraggableSticky";
 
 interface GroupedStickiesProps {
   className?: string;
-  activity_groups: ActivityGroup[];
+  activity_groups: StickyGroup[];
   stickyIdToSticky: {
     [key: string]: Sticky;
   };

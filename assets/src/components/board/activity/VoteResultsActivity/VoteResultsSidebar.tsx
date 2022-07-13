@@ -1,8 +1,7 @@
-import React from "react";
 import { useAppSelector } from "src/redux/hooks";
 
 interface VoteResultsSidebarProps {
-  activity_groups: ActivityGroup[];
+  activity_groups: StickyGroup[];
 }
 
 export default function VoteResultsSidebar(props: VoteResultsSidebarProps) {
@@ -15,7 +14,7 @@ export default function VoteResultsSidebar(props: VoteResultsSidebarProps) {
   // TODO: vertical overflow (many users)
   return (
     <div className="w-60 flex-none bg-gray-100 h-full flex flex-col border-l border-l-gray-200">
-      {props.activity_groups.map((activity_group: ActivityGroup) => (
+      {props.activity_groups.map((activity_group: StickyGroup) => (
         <div className="flex justify-between px-3 py-2 border-b border-b-gray-200">
           <div
             className={"text-gray-500"}

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import VoteResultsList from "src/components/board/activity/VoteResultsActivity/VoteResultsList";
 import VoteResultsSidebar from "src/components/board/activity/VoteResultsActivity/VoteResultsSidebar";
 import TempBoardContext from "src/contexts/TempBoardContext";
@@ -15,7 +15,7 @@ export default function VoteResultsActivity(props: VoteResultsProps) {
         <div className={"flex  flex-1 overflow-x-auto min-w-0"}>
           <div className={"flex-1 flex gap-4 p-6"}>
             <VoteResultsList
-              activityGroups={current_activity.activity_groups}
+              stickyGroups={current_activity.activity_groups}
               stickyIdToSticky={stickyIdToSticky}
             />
           </div>

@@ -1,5 +1,7 @@
 interface Sticky {
   id: number;
-  text: string;
+  title: string;
+  description?: string;
+  image?: string;
   user_id: number;
 }

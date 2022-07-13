@@ -11,7 +11,7 @@ const debug = require("debug")("app:StickyNoteInput");
 interface StickyNoteInputProps {
   className?: string;
   fullRounding?: boolean;
-  activityGroup?: ActivityGroup;
+  stickyGroup?: StickyGroup;
 }
 
 export default function StickyNoteInput(props: StickyNoteInputProps) {
@@ -64,10 +64,10 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
       })}
     >
       {/* TODO: match background to group color */}
-      {props.activityGroup && (
+      {props.stickyGroup && (
         <div className={"bg-pink-100 px-4 py-1 text-pink-800"}>
           <span className={"text-pink-800/[0.5]"}>Add to </span>
-          <span>{props.activityGroup.title}</span>
+          <span>{props.stickyGroup.title}</span>
         </div>
       )}
       <div className={"p-3 w-full flex-1"}>

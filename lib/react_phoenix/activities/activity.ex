@@ -8,6 +8,7 @@ defmodule ReactPhoenix.Activities.Activity do
     field :type, :string
     field :order, :integer
     belongs_to :board, ReactPhoenix.Boards.Board, type: :string
+    has_many :sticky_groups, ReactPhoenix.Stickies.StickyGroup
 
     timestamps()
   end

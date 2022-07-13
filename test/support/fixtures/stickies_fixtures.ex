@@ -19,4 +19,33 @@ defmodule ReactPhoenix.StickiesFixtures do
 
     sticky
   end
+
+  @doc """
+  Generate a sticky_group.
+  """
+  def sticky_group_fixture(attrs \\ %{}) do
+    {:ok, sticky_group} =
+      attrs
+      |> Enum.into(%{
+        color: "some color",
+        title: "some title"
+      })
+      |> ReactPhoenix.Stickies.create_sticky_group()
+
+    sticky_group
+  end
+
+  @doc """
+  Generate a sticky_x_group.
+  """
+  def sticky_x_group_fixture(attrs \\ %{}) do
+    {:ok, sticky_x_group} =
+      attrs
+      |> Enum.into(%{
+
+      })
+      |> ReactPhoenix.Stickies.create_sticky_x_group()
+
+    sticky_x_group
+  end
 end

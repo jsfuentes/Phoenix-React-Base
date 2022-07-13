@@ -1,18 +1,16 @@
-import React from "react";
 import Masonry from "react-masonry-component";
 import { getStickyColor } from "src/components/board/activity/stickyColors";
 import VoteSticky from "src/components/board/activity/VoteActivity/VoteSticky";
-import Button from "src/components/Button";
 
 interface VoteGroupsProps {
-  activityGroups: ActivityGroup[];
+  stickyGroups: StickyGroup[];
   stickyIdToSticky: { [stickyId: string]: Sticky };
 }
 
 export default function VoteGroups(props: VoteGroupsProps) {
   return (
     <div className={"flex-1 flex flex-col gap-5"}>
-      {props.activityGroups.map((activityGroup, index) => {
+      {props.stickyGroups.map((stickyGroup, index) => {
         return (
           <div className={`rounded-md p-4 bg-${getStickyColor(index)}-100`}>
             <div
@@ -22,10 +20,10 @@ export default function VoteGroups(props: VoteGroupsProps) {
                 index
               )}-800`}
             >
-              {activityGroup.title}
+              {stickyGroup.title}
             </div>
             <Masonry className={"w-full"}>
-              {activityGroup.sticky_ids.map((stickyId) => {
+              {stickyGroup.sticky_ids.map((stickyId) => {
                 return (
                   <>
                     {stickyId in props.stickyIdToSticky && (
