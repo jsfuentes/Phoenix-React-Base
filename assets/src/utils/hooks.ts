@@ -2,6 +2,7 @@ import { Blocker, Transition } from "history";
 import { customAlphabet } from "nanoid";
 import React, {
   DependencyList,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -310,4 +311,34 @@ export function useValueRef<Type>(value: Type) {
   }, [value]);
 
   return valueRef;
+}
+
+export function useTimer(props: {
+  initialTimeInSeconds: number;
+  onDone?: () => void;
+}) {
+  const [seconds, setSeconds] = useState(props.initialTimeInSeconds);
+  const [active, setActive] = useState(false);
+
+  const startTimer = useCallback(() => {
+    setActive(true);
+  }, []);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (active) {
+      timeoutId = setTimeout(() => {
+        if (seconds === 1) {
+          setActive(false);
+          props.onDone && props.onDone();
+        }
+        setSeconds((seconds) => seconds - 1);
+      }, 1000);
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  return { seconds, setSeconds, startTimer, active };
 }

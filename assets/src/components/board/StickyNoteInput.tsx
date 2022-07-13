@@ -70,7 +70,7 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
           <span>{props.stickyGroup.title}</span>
         </div>
       )}
-      <div className={"p-3 w-full flex-1"}>
+      <div className={"p-3 w-full flex-1 flex flex-col"}>
         <input
           {...register("title", { required: true })}
           placeholder={"Type idea here..."}
@@ -79,7 +79,7 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
         <textarea
           {...register("description")}
           placeholder={"Description (optional)"}
-          className="w-full text-gray-700 font-medium block bg-transparent resize-none border-none focus:border-none focus:ring-transparent outline-none focus:outline-none placeholder-gray-700/[.40] py-1 px-3 rounded-md"
+          className="w-full text-gray-700 font-medium block bg-transparent resize-none border-none focus:border-none focus:ring-transparent outline-none focus:outline-none placeholder-gray-700/[.40] py-1 px-3 rounded-md flex-1"
         />
         {/*{errors.note?.type === "required" && "This is required"}*/}
         <Button

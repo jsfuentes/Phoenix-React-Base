@@ -161,7 +161,7 @@ const getItems = (count: any, offset = 0) =>
 export default function TempBoardContextProvider(
   props: TempBoardContextProviderProps
 ) {
-  const [curActivityIdx, setCurActivityIdx] = useState(3);
+  const [curActivityIdx, setCurActivityIdx] = useState(0);
   const current_activity = activities[curActivityIdx];
 
   const stickyIdToSticky = useMemo(() => {
