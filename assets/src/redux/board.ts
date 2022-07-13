@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { isEqual, union } from "lodash";
-const debug = require("debug")("app:redux:presence");
+const debug = require("debug")("app:redux:board");
 
 const initialState: BoardState = {
   activities: {
@@ -18,58 +17,60 @@ const boardSlice = createSlice({
   initialState,
   reducers: {
     updateBoard(state, action: PayloadAction<BoardState>) {
+      debug("updateBoard", state, action.payload);
+
+      //TODO: Check if when there aren't any changes to some allIds list of board info that useSelector doesn't update correctly
+      return action.payload;
+      // state = action.payload;
+
       //recreates all the objects locally to easily handle room/table changes and user leaves/joins, but then actually check for changes before updating
       //TODO: Check updating state. only on changes is actually an optimization
       //TODO: Check that Object.keys() and the action.payload are in the same order if unchanged(does isEqual on the arrays)
-      debug("ACTION PAYLOAD", action.payload);
+      // // ACTIVITIES UPDATE
+      // //Set new objects only on changes
+      // const allActivitesByIds = union(
+      //   Object.keys(state.activities.byId),
+      //   Object.keys(action.payload.activities.byId)
+      //   //need map for type safety, but should be unnecessary
+      // ).map((aid) => (typeof aid === "string" ? parseInt(aid) : aid));
 
-      state.board = action.payload.board;
+      // for (const id of allActivitesByIds) {
+      //   const oldA = state.activities.byId[id];
+      //   const newA = action.payload.activities.byId[id];
 
-      // ACTIVITIES UPDATE
-      //Set new objects only on changes
-      const allActivitesByIds = union(
-        Object.keys(state.activities.byId),
-        Object.keys(action.payload.activities.byId)
-        //need map for type safety, but should be unnecessary
-      ).map((aid) => (typeof aid === "string" ? parseInt(aid) : aid));
+      //   if (!newA) {
+      //     delete state.activities.byId[id];
+      //   } else if (!isEqual(oldA, newA)) {
+      //     state.activities.byId[id] = newA;
+      //   }
+      // }
 
-      for (const id of allActivitesByIds) {
-        const oldA = state.activities.byId[id];
-        const newA = action.payload.activities.byId[id];
+      // if (!isEqual(action.payload.activities.allIds, state.activities.allIds)) {
+      //   state.activities.allIds = action.payload.activities.allIds;
+      // }
 
-        if (!newA) {
-          delete state.activities.byId[id];
-        } else if (!isEqual(oldA, newA)) {
-          state.activities.byId[id] = newA;
-        }
-      }
+      // // STICKIES UPDATE
+      // //Set new objects only on changes
+      // const allStickiesById = union(
+      //   Object.keys(state.stickies.byId),
+      //   Object.keys(action.payload.stickies.byId)
+      //   //need map for type safety, but should be unnecessary
+      // ).map((st) => (typeof st === "string" ? parseInt(st) : st));
 
-      if (!isEqual(action.payload.activities.allIds, state.activities.allIds)) {
-        state.activities.allIds = action.payload.activities.allIds;
-      }
+      // for (const id of allStickiesById) {
+      //   const oldS = state.stickies.byId[id];
+      //   const newS = action.payload.stickies.byId[id];
 
-      // STICKIES UPDATE
-      //Set new objects only on changes
-      const allStickiesById = union(
-        Object.keys(state.stickies.byId),
-        Object.keys(action.payload.stickies.byId)
-        //need map for type safety, but should be unnecessary
-      ).map((st) => (typeof st === "string" ? parseInt(st) : st));
+      //   if (!newS) {
+      //     delete state.stickies.byId[id];
+      //   } else if (!isEqual(oldS, newS)) {
+      //     state.stickies.byId[id] = newS;
+      //   }
+      // }
 
-      for (const id of allStickiesById) {
-        const oldS = state.stickies.byId[id];
-        const newS = action.payload.stickies.byId[id];
-
-        if (!newS) {
-          delete state.stickies.byId[id];
-        } else if (!isEqual(oldS, newS)) {
-          state.stickies.byId[id] = newS;
-        }
-      }
-
-      if (!isEqual(action.payload.stickies.allIds, state.stickies.allIds)) {
-        state.stickies.allIds = action.payload.stickies.allIds;
-      }
+      // if (!isEqual(action.payload.stickies.allIds, state.stickies.allIds)) {
+      //   state.stickies.allIds = action.payload.stickies.allIds;
+      // }
     },
   },
 });

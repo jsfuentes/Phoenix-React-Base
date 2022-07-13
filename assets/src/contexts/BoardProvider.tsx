@@ -83,7 +83,7 @@ export default function BoardProvider(props: BoardProviderProps) {
   useEffect(() => {
     if (boardChannel) {
       boardChannel.on("board_state", updateBoardState);
-      return () => boardChannel.off("get_board_state");
+      return () => boardChannel.off("board_state");
     }
   }, [boardChannel, updateBoardState]);
 

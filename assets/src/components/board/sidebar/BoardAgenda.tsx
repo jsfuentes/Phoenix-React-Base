@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import TempBoardContext from "src/contexts/TempBoardContext";
-
+const debug = require("debug")("app:sidebar:BoardAgenda");
 interface BoardAgendaProps {}
 
 export default function BoardAgenda(props: BoardAgendaProps) {

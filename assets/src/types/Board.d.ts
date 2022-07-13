@@ -7,8 +7,7 @@ interface Board {
   stickies: Array<Sticky>;
 }
 
-interface BoardState {
-  board?: Omit<Board, "activities" | "stickies">;
+interface BoardState extends Partial<Omit<Board, "activities" | "stickies">> {
   activities: {
     byId: Record<number, Activity>;
     allIds: number[];
