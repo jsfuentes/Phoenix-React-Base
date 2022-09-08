@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: template
+    env: elixir
+    plan: Free
+    buildCommand: source .prod.env && ./build.sh
+    startCommand: _build/prod/rel/react_phoenix/bin/react_phoenix start
+    healthCheckPath: /api
+    # domains:
+    #   - test0.render.com
+    #   - test1.render.com
+    envVars:
+      - key: ELIXIR_VERSION
+        value: 1.13.4
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      # - key: DB_HOSTNAME
+      #   fromDatabase:
+      #     name: Template_DB
+      #     property: host
+      # - key: DB_DATABASE
+      #   fromDatabase:
+      #     name: Template_DB
+      #     property: database
+      # - key: DB_USERNAME
+      #   fromDatabase:
+      #     name: Template_DB
+      #     property: user
+      # - key: DB_PASSWORD
+      #   fromDatabase:
+      #     name: Template_DB
+      #     property: password
+    pullRequestPreviewsEnabled: false # optional
+
+databases:
+  - name: Template_DB
+  - plan: Free
