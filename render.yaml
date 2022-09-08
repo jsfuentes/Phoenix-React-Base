@@ -34,4 +34,4 @@ services:
 
 databases:
   - name: Template_DB
-  - plan: Free
+    plan: Free
