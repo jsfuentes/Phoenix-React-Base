@@ -10,22 +10,17 @@ defmodule ReactPhoenixWeb.BoardChannel do
 
   @impl true
   def join("board:" <> board_id, payload, socket) do
-    user_id = socket.assigns.user_id
-    pList = Presence.list(socket)
-
-    if Map.has_key?(pList, user_id) do
-      {:error, %{reason: "DUPLICATE_USER"}}
-    else
-      assignedSocket = assign(socket, :board_id, board_id)
-      send(self(), {:after_join, Map.get(payload, "userStatus")})
-      {:ok, :hello, assignedSocket}
-    end
+    assignedSocket = assign(socket, :board_id, board_id)
+    # TODO: Add better error handling here
+    board_state = construct_board_state(board_id)
+    send(self(), {:after_join, Map.get(payload, "userStatus")})
+    {:ok, %{data: board_state}, assignedSocket}
   end
 
   @impl true
   def handle_info({:after_join, initial_status}, socket) do
     user_id = socket.assigns.user_id
-    board_id = socket.assigns.board_id
+    # board_id = socket.assigns.board_id
 
     # CREATE AND SEND PRESENCE
     data =
@@ -38,9 +33,6 @@ defmodule ReactPhoenixWeb.BoardChannel do
     pList = Presence.list(socket)
     push(socket, "presence_state", pList)
 
-    # CREATE AND SEND BOARD STATE
-    board_state = construct_board_state(board_id) |> IO.inspect()
-    push(socket, "board_state", board_state)
     {:noreply, socket}
   end
 
@@ -52,30 +44,60 @@ defmodule ReactPhoenixWeb.BoardChannel do
   end
 
   @impl true
-  def handle_in("add_sticky", %{"title" => title} = payload, socket) do
+  def handle_in("board_diff", %{"type" => type, "payload" => payload}, socket) do
     user_id = socket.assigns.user_id
     board_id = socket.assigns.board_id
 
-    {:ok, %Sticky{}} =
-      Stickies.create_sticky(%{
-        "board_id" => board_id,
-        "user_id" => user_id,
-        "title" => title,
-        "description" => Map.get(payload, "description", nil)
-      })
+    # TODO: Instead of repushing entire board state just push the diff and have the client update its local state
+    case type do
+      "add_sticky" ->
+        title = Map.get(payload, "title")
 
-    {:reply, :ok, socket}
+        cond do
+          is_nil(title) ->
+            Logger.error("Adding sticky without title")
+            {:reply, {:error, %{reason: "Adding sticky without title"}}, socket}
+
+          true ->
+            {:ok, %Sticky{} = new_sticky} =
+              Stickies.create_sticky(%{
+                "board_id" => board_id,
+                "user_id" => user_id,
+                "title" => title,
+                "description" => Map.get(payload, "description", nil),
+                "sticky_groups" => Map.get(payload, "sticky_groups", [])
+              })
+
+            viewed_sticky =
+              Phoenix.View.render_one(new_sticky, ReactPhoenixWeb.BoardView, "sticky.json",
+                as: :sticky
+              )
+
+            Logger.warn("BOARD_DIFF: ADD_STICKY: " <> inspect(viewed_sticky))
+            broadcast(socket, "board_diff", %{"type" => type, "payload" => viewed_sticky})
+
+            {:reply, {:ok, viewed_sticky}, socket}
+        end
+
+      t ->
+        Logger.error("Invalid board diff type: " <> t,
+          extra: %{user_id: user_id, board_id: board_id}
+        )
+
+        {:reply, {:error, %{reason: "Invalid type of board update"}}, socket}
+    end
   end
 
   @impl true
   def handle_in("get_board_state", _payload, socket) do
-    user_id = socket.assigns.user_id
+    # user_id = socket.assigns.user_id
     board_id = socket.assigns.board_id
 
     board_state = construct_board_state(board_id) |> IO.inspect()
     {:reply, {:ok, board_state}, socket}
   end
 
+  # TODO: Add error handling to constructing board state
   def construct_board_state(board_id) do
     board = ReactPhoenix.Boards.get_board!(board_id)
     {:ok, %{schedule_state: schedule_state}} = BoardSupervisor.get_board_state(board_id)
@@ -85,8 +107,6 @@ defmodule ReactPhoenixWeb.BoardChannel do
 
     Map.merge(viewed_board, %{schedule_state: schedule_state})
   end
-
-  # TODO: One day, all messages should be in redux form and sent as payloads to backend which 1) updates db and 2) sends to all clients
 
   # # Channels can be used in a request/response fashion
   # # by sending replies to requests from the client

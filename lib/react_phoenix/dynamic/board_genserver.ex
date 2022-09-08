@@ -2,7 +2,7 @@ defmodule ReactPhoenix.Dynamic.BoardGenServer do
   use GenServer, restart: :transient
   require Logger
 
-  alias ReactPhoenixWeb.Endpoint
+  # alias ReactPhoenixWeb.Endpoint
   alias ReactPhoenix.Boards
 
   # @default_board_state %{is_open: true}

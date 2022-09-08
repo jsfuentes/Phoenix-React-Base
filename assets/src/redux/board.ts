@@ -16,7 +16,7 @@ const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    updateBoard(state, action: PayloadAction<BoardState>) {
+    update_board(state, action: PayloadAction<BoardState>) {
       debug("updateBoard", state, action.payload);
 
       //TODO: Check if when there aren't any changes to some allIds list of board info that useSelector doesn't update correctly
@@ -72,9 +72,17 @@ const boardSlice = createSlice({
       //   state.stickies.allIds = action.payload.stickies.allIds;
       // }
     },
+    add_update_sticky(state, action: PayloadAction<Sticky>) {
+      debug("add_update_sticky", action.payload);
+      const newSticky = action.payload;
+      state.stickies.byId[newSticky.id] = action.payload;
+      if (!state.stickies.allIds.includes(newSticky.id)) {
+        state.stickies.allIds = state.stickies.allIds.concat([newSticky.id]);
+      }
+    },
   },
 });
 
-export const { updateBoard } = boardSlice.actions;
+export const { add_update_sticky, update_board } = boardSlice.actions;
 
 export default boardSlice.reducer;

@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import "boxicons";
 import conf from "conf";
+// import LogRocket from "logrocket";
 import "phoenix_html";
 // Put all CSS stylesheets here that are over ridden so it properly cascades event with code splitting
 // import "react-datepicker/dist/react-datepicker.css";
@@ -14,6 +15,26 @@ import * as serviceWorker from "./serviceWorker";
 
 const IS_SENTRY_ACTIVE =
   conf.has("SENTRY_DNS") && conf.get("SENTRY_DNS") !== "";
+
+// function setLGSession() {
+//   LogRocket.getSessionURL((sessionURL) => {
+//     Sentry.setContext("LG", { sessionURL });
+//     console.log("LG", sessionURL);
+//     segmentUserAction("LogRocket", {
+//       sessionURL: sessionURL,
+//     });
+//   });
+// }
+
+if (process.env.NODE_ENV !== "testing") {
+  // LogRocket.init(conf.get("LOGROCKET_KEY"));
+  // posthog.init(conf.get(POSTHOG_KEY), {
+  //   api_host: "https://app.posthog.com",
+  //   autocapture: false,
+  //   capture_pageview: false,
+  //   opt_out_capturing_by_default: true,
+  // });
+}
 
 if (process.env.NODE_ENV !== "production") {
   localStorage.debug = "app:*";
@@ -36,6 +57,7 @@ if (process.env.NODE_ENV !== "production") {
             "localhost",
             "eta-staging.onrender.com",
             "app.clayboard.com",
+            "app.pathspace.com",
             /^\//,
           ],
           // ... other options

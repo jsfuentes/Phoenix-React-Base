@@ -21,6 +21,10 @@ defmodule ReactPhoenix.Boards do
     Repo.all(Board)
   end
 
+  def list_boards_by_user(user_id) do
+    Repo.all(from b in Board, where: b.owner_id == ^user_id, order_by: [desc: b.updated_at])
+  end
+
   @doc """
   Gets a single board.
 

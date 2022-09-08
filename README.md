@@ -19,7 +19,7 @@ Put your environment variables in `/.env`, use sample.env to see what variables 
 ```
 mix deps.get #Install deps
 cd assets  #Install clientside npm packages
-yarn
+npm i
 cd ..
 source .env #Seed environment
 mix phx.server #Start server

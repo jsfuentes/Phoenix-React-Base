@@ -35,7 +35,12 @@ defmodule ReactPhoenix.StickiesTest do
 
     test "update_sticky/2 with valid data updates the sticky" do
       sticky = sticky_fixture()
-      update_attrs = %{description: "some updated description", image: "some updated image", title: "some updated title"}
+
+      update_attrs = %{
+        description: "some updated description",
+        image: "some updated image",
+        title: "some updated title"
+      }
 
       assert {:ok, %Sticky{} = sticky} = Stickies.update_sticky(sticky, update_attrs)
       assert sticky.description == "some updated description"
@@ -94,14 +99,19 @@ defmodule ReactPhoenix.StickiesTest do
       sticky_group = sticky_group_fixture()
       update_attrs = %{color: "some updated color", title: "some updated title"}
 
-      assert {:ok, %StickyGroup{} = sticky_group} = Stickies.update_sticky_group(sticky_group, update_attrs)
+      assert {:ok, %StickyGroup{} = sticky_group} =
+               Stickies.update_sticky_group(sticky_group, update_attrs)
+
       assert sticky_group.color == "some updated color"
       assert sticky_group.title == "some updated title"
     end
 
     test "update_sticky_group/2 with invalid data returns error changeset" do
       sticky_group = sticky_group_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stickies.update_sticky_group(sticky_group, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stickies.update_sticky_group(sticky_group, @invalid_attrs)
+
       assert sticky_group == Stickies.get_sticky_group!(sticky_group.id)
     end
 
@@ -148,12 +158,16 @@ defmodule ReactPhoenix.StickiesTest do
       sticky_x_group = sticky_x_group_fixture()
       update_attrs = %{}
 
-      assert {:ok, %StickyXGroup{} = sticky_x_group} = Stickies.update_sticky_x_group(sticky_x_group, update_attrs)
+      assert {:ok, %StickyXGroup{} = sticky_x_group} =
+               Stickies.update_sticky_x_group(sticky_x_group, update_attrs)
     end
 
     test "update_sticky_x_group/2 with invalid data returns error changeset" do
       sticky_x_group = sticky_x_group_fixture()
-      assert {:error, %Ecto.Changeset{}} = Stickies.update_sticky_x_group(sticky_x_group, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Stickies.update_sticky_x_group(sticky_x_group, @invalid_attrs)
+
       assert sticky_x_group == Stickies.get_sticky_x_group!(sticky_x_group.id)
     end
 

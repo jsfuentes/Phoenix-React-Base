@@ -6,7 +6,7 @@ defmodule ReactPhoenix.Repo.Migrations.CreateUsers do
       add :id, :string, primary_key: true
       add :email, :string
       add :name, :string
-      add :picture, :string
+      add :picture, :text
       add :type, :string
 
       timestamps()

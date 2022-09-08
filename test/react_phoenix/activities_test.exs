@@ -21,7 +21,12 @@ defmodule ReactPhoenix.ActivitiesTest do
     end
 
     test "create_activity/1 with valid data creates a activity" do
-      valid_attrs = %{description: "some description", order: 42, title: "some title", type: "some type"}
+      valid_attrs = %{
+        description: "some description",
+        order: 42,
+        title: "some title",
+        type: "some type"
+      }
 
       assert {:ok, %Activity{} = activity} = Activities.create_activity(valid_attrs)
       assert activity.description == "some description"
@@ -36,7 +41,13 @@ defmodule ReactPhoenix.ActivitiesTest do
 
     test "update_activity/2 with valid data updates the activity" do
       activity = activity_fixture()
-      update_attrs = %{description: "some updated description", order: 43, title: "some updated title", type: "some updated type"}
+
+      update_attrs = %{
+        description: "some updated description",
+        order: 43,
+        title: "some updated title",
+        type: "some updated type"
+      }
 
       assert {:ok, %Activity{} = activity} = Activities.update_activity(activity, update_attrs)
       assert activity.description == "some updated description"

@@ -41,9 +41,7 @@ defmodule ReactPhoenix.StickiesFixtures do
   def sticky_x_group_fixture(attrs \\ %{}) do
     {:ok, sticky_x_group} =
       attrs
-      |> Enum.into(%{
-
-      })
+      |> Enum.into(%{})
       |> ReactPhoenix.Stickies.create_sticky_x_group()
 
     sticky_x_group

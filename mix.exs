@@ -46,6 +46,7 @@ defmodule ReactPhoenix.MixProject do
       {:hackney, "~> 1.8"},
       {:jason, "~> 1.2"},
       {:nanoid, "~> 2.0.4"},
+      {:oauth2, "~> 2.0"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_dashboard, "~> 0.6"},
@@ -56,8 +57,10 @@ defmodule ReactPhoenix.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:sentry, "~> 8.0.6"},
       {:swoosh, "~> 1.3"},
+      {:tesla, "~> 1.4"},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:ueberauth, "~> 0.10"}
     ]
   end
 

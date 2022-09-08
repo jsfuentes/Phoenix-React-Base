@@ -1,5 +1,7 @@
 import { Channel } from "phoenix";
 
 export interface BoardContextType {
-  boardChannel: null | Channel;
+  boardChannel?: Channel;
+  addSticky?: (newSticky: Partial<Sticky>) => Promise<void>;
+  updateSticky?: (sticky: Sticky, newSticky: Partial<Sticky>) => Promise<void>;
 }

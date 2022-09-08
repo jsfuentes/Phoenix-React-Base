@@ -10,7 +10,7 @@ defmodule ReactPhoenixWeb.ApiController do
     |> text("OK")
   end
 
-  def error(conn, _params) do
+  def error(_conn, _params) do
     Logger.error("TESTING ERROR SENTRY", extra: %{a: "help", b: 1})
 
     try do

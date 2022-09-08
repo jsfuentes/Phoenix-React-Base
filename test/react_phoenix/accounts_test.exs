@@ -21,7 +21,13 @@ defmodule ReactPhoenix.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{email: "some email", id: "some id", name: "some name", picture: "some picture", type: "some type"}
+      valid_attrs = %{
+        email: "some email",
+        id: "some id",
+        name: "some name",
+        picture: "some picture",
+        type: "some type"
+      }
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.email == "some email"
@@ -37,7 +43,14 @@ defmodule ReactPhoenix.AccountsTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{email: "some updated email", id: "some updated id", name: "some updated name", picture: "some updated picture", type: "some updated type"}
+
+      update_attrs = %{
+        email: "some updated email",
+        id: "some updated id",
+        name: "some updated name",
+        picture: "some updated picture",
+        type: "some updated type"
+      }
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.email == "some updated email"

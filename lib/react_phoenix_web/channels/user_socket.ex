@@ -30,7 +30,7 @@ defmodule ReactPhoenixWeb.UserSocket do
         {:ok, new_socket}
 
       {:error, reason} ->
-        Logger.error("Verify socket #{inspect(reason)}",
+        Logger.warn("Verify socket #{inspect(reason)}",
           extra: %{token: inspect(token), reason: inspect(reason)}
         )
 

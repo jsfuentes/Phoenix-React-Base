@@ -12,12 +12,16 @@ import { toast } from "react-toastify";
 import Loading from "src/components/Loading";
 import SocketContext from "src/contexts/SocketContext";
 import UserStatusContext from "src/contexts/UserStatusContext";
-import { updateBoard } from "src/redux/board";
-import { useAppDispatch } from "src/redux/hooks";
+import { add_update_sticky, update_board } from "src/redux/board";
+import { useAppDispatch, useAppSelector } from "src/redux/hooks";
+import { logChannelPushError, logErrorMessage } from "src/redux/notification";
 import { PresenceList, updatePresence } from "src/redux/presence";
 import { updateSelf } from "src/redux/userStatus";
+import { segmentUserAction } from "src/utils/analytics/segment";
+import { pushChannelAsync } from "src/utils/channel/channel";
 import BoardContext from "./BoardContext";
 import UserContext from "./UserContext";
+
 const debug = require("debug")("app:BoardProvider");
 
 interface BoardProviderProps {
@@ -30,8 +34,22 @@ export default function BoardProvider(props: BoardProviderProps) {
   const { user } = useContext(UserContext);
   const { userStatusR, setUpdateChannel } = useContext(UserStatusContext);
   const { joinBoardChannel } = useContext(SocketContext);
-  const [boardChannel, setBoardChannel] = useState<Channel | null>(null);
+  const [boardChannel, setBoardChannel] = useState<Channel | undefined>(
+    undefined
+  );
   const dispatch = useAppDispatch();
+
+  const currentActivityId = useAppSelector(
+    (state) => state.board.schedule_state?.activity_id
+  );
+
+  const updateBoardState = useCallback(
+    (boardState: BoardState) => {
+      debug("new board state", boardState);
+      dispatch(update_board(boardState));
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     let channel: Channel, presence: Presence;
@@ -39,12 +57,18 @@ export default function BoardProvider(props: BoardProviderProps) {
       (async () => {
         try {
           debug("Joining board channel");
-          const channelObj = await joinBoardChannel(board_id, { userStatusR });
+          const channelObj = await joinBoardChannel(
+            board_id,
+            { userStatusR },
+            ({ data: boardState }) => updateBoardState(boardState)
+          );
+          debug("Joined board channel", channelObj?.channel?.state);
+
           channel = channelObj.channel;
           presence = channelObj.presence;
         } catch (err) {
           const message =
-            "Join board channel failed, refresh the page and try again";
+            "Something went wrong joining the board, please refresh the page and try again";
           toast(message);
           Sentry.captureException(err);
           console.error(message, err);
@@ -73,12 +97,34 @@ export default function BoardProvider(props: BoardProviderProps) {
         setUpdateChannel && setUpdateChannel(null);
       }
     };
-  }, [joinBoardChannel, board_id, dispatch, setUpdateChannel, userStatusR]);
+  }, [
+    joinBoardChannel,
+    board_id,
+    dispatch,
+    setUpdateChannel,
+    userStatusR,
+    updateBoardState,
+  ]);
 
-  const updateBoardState = useCallback((boardState: BoardState) => {
-    debug("new board state", boardState);
-    dispatch(updateBoard(boardState));
-  }, []);
+  useEffect(() => {
+    if (!board_id) {
+      dispatch(
+        logErrorMessage(
+          "No board id, try reopening the board or creating a new one"
+        )
+      );
+    } else if (!boardChannel) {
+      const timeoutId = setTimeout(() => {
+        dispatch(
+          logErrorMessage(
+            "Timeout waiting for board channel, try refreshing the page"
+          )
+        );
+      }, 7000);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [boardChannel, board_id, dispatch]);
 
   useEffect(() => {
     if (boardChannel) {
@@ -102,11 +148,84 @@ export default function BoardProvider(props: BoardProviderProps) {
     [user, dispatch]
   );
 
+  const addSticky = useCallback(
+    async (newSticky: Partial<Sticky>) => {
+      if (!boardChannel) {
+        dispatch(
+          logErrorMessage(
+            "Updating sticky note failed, try again or contact support - invalid board connection"
+          )
+        );
+        return;
+      }
+
+      try {
+        const resp = await pushChannelAsync(boardChannel, "board_diff", {
+          type: "add_sticky",
+          payload: newSticky,
+        });
+
+        debug("add_sticky resp", resp);
+      } catch (err) {
+        dispatch(
+          logChannelPushError(err, "Submitting Sticky", { notifType: null })
+        );
+        toast(
+          "There was a problem adding that idea. Try again or refresh the page"
+        );
+      }
+
+      segmentUserAction("Sticky Added", { newSticky });
+    },
+    [boardChannel, dispatch]
+  );
+
+  const updateSticky = useCallback(
+    async (sticky: Sticky, newSticky: Partial<Sticky>) => {
+      if (!boardChannel) {
+        dispatch(
+          logErrorMessage(
+            "Updating sticky note failed, try again or contact support - invalid board connection"
+          )
+        );
+        return;
+      }
+
+      const finalSticky = {
+        ...sticky,
+        ...newSticky,
+      };
+      debug("Update sticky to", finalSticky);
+
+      dispatch(add_update_sticky(finalSticky));
+      try {
+        const resp = await pushChannelAsync(boardChannel, "board_diff", {
+          type: "update_sticky",
+          payload: finalSticky,
+        });
+        debug("update_sticky resp", resp);
+      } catch (err) {
+        dispatch(
+          logChannelPushError(err, "Updating Sticky", { notifType: null })
+        );
+        toast(
+          "There was a problem updating that idea. Try again or refresh the page"
+        );
+
+        //undo optimistic update
+        dispatch(add_update_sticky(sticky));
+      }
+    },
+    [boardChannel, dispatch]
+  );
+
   const value = useMemo(() => {
     return {
       boardChannel,
+      addSticky,
+      updateSticky,
     };
-  }, [boardChannel]);
+  }, [boardChannel, addSticky, updateSticky]);
 
   if (!boardChannel) {
     return <Loading />;

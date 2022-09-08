@@ -67,6 +67,10 @@ module.exports = (env, options) => ({
               ),
             ],
           },
+          {
+            test: /\.(woff|woff2)$/,
+            type: "asset/inline",
+          },
           // "url" loader works like "file" loader except that it embeds assets
           // smaller than specified limit in bytes as data URLs to avoid requests.
           // A missing `test` is equivalent to a match.
@@ -144,7 +148,9 @@ module.exports = (env, options) => ({
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(["NODE_ENV"]),
+    new webpack.DefinePlugin({
+      // "process.env.NODE_ENV": options.mode || "development",
+    }),
     new MiniCssExtractPlugin({ filename: "./src/app.css" }),
     new CopyWebpackPlugin({ patterns: [{ from: "public/", to: "./" }] }),
     new webpack.ProvidePlugin({

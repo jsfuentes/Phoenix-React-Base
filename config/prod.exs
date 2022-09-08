@@ -15,6 +15,48 @@ config :react_phoenix, ReactPhoenixWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
+# Configure your database
+config :react_phoenix, ReactPhoenix.Repo,
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "15")
+
+# HOST_URL should be in form "app.clayboard.com" or "localhost:3000"
+config :react_phoenix, ReactPhoenixWeb.Endpoint,
+  http: [port: {:system, "PORT"}],
+  url: [scheme: "https", host: System.get_env("HOST_URL"), port: 443],
+  # check_origin: [host_url], #might be needed for live dashboard
+  # url: [scheme: "https", host: "clayboard.com", port: 443],
+  cache_static_manifest: "priv/static/cache_manifest.json"
+
+config :sentry,
+  dsn: System.get_env("SENTRY_DSN_URL"),
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
+
+config :logger, backends: [:console, Sentry.LoggerBackend]
+# print all messages in prod
+
+config :logger, :console,
+  # format: {ReactPhoenix.Helpers.LogFormatter, :format},
+  # format: "$time - $level$levelpad $metadata | $message\n",
+  level: :debug
+
+# sentry capture all error messages
+config :logger,
+       Sentry.LoggerBackend,
+       # Send messages like `Logger.error("error")` to Sentry
+       capture_log_messages: true,
+       # Also send warn messages like `Logger.warn("warning")` to Sentry
+       # level: :warn,
+       # Do not exclude exceptions from Plug/Cowboy
+       excluded_domains: [],
+       # Include metadata added with `Logger.metadata([foo_bar: "value"])`
+       metadata: [:request_id, :extra]
+
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
