@@ -87,6 +87,16 @@ defmodule ReactPhoenix.Boards do
     |> Repo.update()
   end
 
+  def update_board_owner(original_owner_id, new_owner_id) do
+    query = from(b in Board, where: b.owner_id == ^original_owner_id)
+
+    Repo.update_all(query,
+      set: [
+        owner_id: new_owner_id
+      ]
+    )
+  end
+
   @doc """
   Deletes a board.
 

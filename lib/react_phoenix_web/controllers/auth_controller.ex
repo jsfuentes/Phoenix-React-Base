@@ -122,15 +122,18 @@ defmodule ReactPhoenixWeb.AuthController do
 
   def after_auth_redirect(%{assigns: %{current_user: %{type: user_type, id: user_id}}} = conn) do
     invite_token = get_session(conn, :auth_invite_token)
+
     # If the user is anon then signs in to claim board, we need to transfer the board ownership to the new id
     # I think this may technically allow anyone to steal boards. TODO: fetch the original user id server side instead of in param
     prev_user_id = get_session(conn, :auth_id)
 
     if prev_user_id && prev_user_id != user_id do
-      Logger.debug("Switching board ownership of user #{inspect(prev_user_id)} to #{inspect(user_id)}")
+      Logger.debug(
+        "Switching board ownership of user #{inspect(prev_user_id)} to #{inspect(user_id)}"
+      )
+
       ReactPhoenix.Boards.update_board_owner(prev_user_id, user_id)
       ReactPhoenix.Stickies.update_sticky_owner(prev_user_id, user_id)
-      ReactPhoenix.Stickies.update_vote_owner(prev_user_id, user_id)
     else
       Logger.debug("Logged in user #{inspect(user_id)} is new. Not switching boards")
     end

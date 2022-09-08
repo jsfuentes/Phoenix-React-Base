@@ -12,8 +12,8 @@ services:
     envVars:
       - key: ELIXIR_VERSION
         value: 1.13.4
-      - key: SECRET_KEY_BASE
-        generateValue: true
+      # - key: SECRET_KEY_BASE
+      #   generateValue: true
       # - key: DB_HOSTNAME
       #   fromDatabase:
       #     name: Template_DB

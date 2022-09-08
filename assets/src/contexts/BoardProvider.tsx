@@ -17,7 +17,6 @@ import { useAppDispatch, useAppSelector } from "src/redux/hooks";
 import { logChannelPushError, logErrorMessage } from "src/redux/notification";
 import { PresenceList, updatePresence } from "src/redux/presence";
 import { updateSelf } from "src/redux/userStatus";
-import { segmentUserAction } from "src/utils/analytics/segment";
 import { pushChannelAsync } from "src/utils/channel/channel";
 import BoardContext from "./BoardContext";
 import UserContext from "./UserContext";
@@ -167,15 +166,10 @@ export default function BoardProvider(props: BoardProviderProps) {
 
         debug("add_sticky resp", resp);
       } catch (err) {
-        dispatch(
-          logChannelPushError(err, "Submitting Sticky", { notifType: null })
-        );
-        toast(
-          "There was a problem adding that idea. Try again or refresh the page"
-        );
+        dispatch(logChannelPushError(err, "Submitting Sticky"));
       }
 
-      segmentUserAction("Sticky Added", { newSticky });
+      // segmentUserAction("Sticky Added", { newSticky });
     },
     [boardChannel, dispatch]
   );

@@ -1,11 +1,10 @@
 import classNames from "classnames";
-import { useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useForm } from "react-hook-form";
 import Button from "src/components/Button";
 import BoardContext from "src/contexts/BoardContext";
 import { useAppDispatch } from "src/redux/hooks";
-import { logChannelPushError, logErrorMessage } from "src/redux/notification";
-import { pushChannelAsync } from "src/utils/channel/channel";
+import { logErrorMessage } from "src/redux/notification";
 const debug = require("debug")("app:StickyNoteInput");
 
 interface StickyNoteInputProps {
@@ -15,7 +14,7 @@ interface StickyNoteInputProps {
 }
 
 export default function StickyNoteInput(props: StickyNoteInputProps) {
-  const { boardChannel } = useContext(BoardContext);
+  const { addSticky } = useContext(BoardContext);
   const {
     register,
     handleSubmit,
@@ -29,28 +28,30 @@ export default function StickyNoteInput(props: StickyNoteInputProps) {
   });
   const dispatch = useAppDispatch();
 
-  const onSubmit = handleSubmit(async (data) => {
-    debug("Submit Sticky", data);
+  const onSubmit = useCallback(
+    async (title: string, description: string) => {
+      if (!addSticky) {
+        dispatch(
+          logErrorMessage(
+            "Submitting sticky note failed, try again or contact support - board function doesn't exist"
+          )
+        );
+        return;
+      }
 
-    if (!boardChannel) {
-      dispatch(
-        logErrorMessage(
-          "Submitting sticky note failed, try again or contact support - invalid board connection"
-        )
-      );
-      return;
-    }
+      try {
+        await addSticky({
+          title: title,
+          description: description,
+        });
 
-    try {
-      const resp = await pushChannelAsync(boardChannel, "add_sticky", {
-        title: data.title,
-        description: data.description,
-      });
-      debug("add_sticky resp", resp);
-    } catch (err) {
-      dispatch(logChannelPushError(err, "Submitting Sticky"));
-    }
-  });
+        // Can be used by parent to for ex hide the input on submit
+      } catch (err) {
+        debug("Adding sticky failed");
+      }
+    },
+    [addSticky, dispatch]
+  );
 
   return (
     <form

@@ -20,7 +20,7 @@ const obj = _.defaultsDeep(envConf, defaults);
 //   obj.CLIENT_URL = "https://" + process.env.RENDER_EXTERNAL_HOSTNAME;
 // }
 console.log(
-  `${process.env.NODE_ENV} ${env} - Using ${obj.NAME} config on ${obj.SERVER_URL}`
+  `Using ${obj.NAME} config on ${obj.SERVER_URL} - ${process.env.NODE_ENV} ${env} -`
 );
 // console.log(`Using ${obj.NAME} config`, {
 //   RENDER_ETA_STAGING: process.env.RENDER_ETA_STAGING,

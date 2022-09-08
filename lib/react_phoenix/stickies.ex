@@ -73,6 +73,16 @@ defmodule ReactPhoenix.Stickies do
     |> Repo.update()
   end
 
+  def update_sticky_owner(original_owner_id, new_owner_id) do
+    query = from(s in Sticky, where: s.user_id == ^original_owner_id)
+
+    Repo.update_all(query,
+      set: [
+        user_id: new_owner_id
+      ]
+    )
+  end
+
   @doc """
   Deletes a sticky.
 

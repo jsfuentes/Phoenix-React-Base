@@ -20,14 +20,15 @@ config :react_phoenix, ReactPhoenix.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "6"),
   ssl: true
 
-IO.puts("Config.exs - Secret test: #{System.get_env("DB_HOSTNAME")}")
+IO.puts("Config DB: #{System.get_env("DB_HOSTNAME")}")
 
-secret_key_base =
-  System.get_env("SECRET_KEY_BASE") ||
-    raise """
-    environment variable SECRET_KEY_BASE is missing.
-    You can generate one by calling: mix phx.gen.secret or try running `source .env`
-    """
+secret_key_base = System.get_env("SECRET_KEY_BASE")
+
+if is_nil(secret_key_base) or secret_key_base == "" do
+  IO.puts(
+    "Environment variable SECRET_KEY_BASE is missing. You can generate one by calling: mix phx.gen.secret or try running `source .prod.env`"
+  )
+end
 
 # Configures the endpoint
 config :react_phoenix, ReactPhoenixWeb.Endpoint,

@@ -37,8 +37,7 @@
     "react-router-dom": "^6.3.0",
     "react-toastify": "9.0.3",
     "react-tooltip": "^4.2.21",
-    "tslib": "^2.1.0",
-    "use-memo-one": "^1.1.2"
+    "tslib": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

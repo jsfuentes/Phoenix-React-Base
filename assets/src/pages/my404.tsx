@@ -1,4 +1,3 @@
-import React from "react";
 import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
 import Robot from "src/img/404.svg";
