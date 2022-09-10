@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import Navbar from "src/components/Navbar";
 import UserContext from "src/contexts/UserContext";
 import { useAppSelector } from "src/redux/hooks";
@@ -7,10 +7,7 @@ import ShareBoard from "./ShareBoard";
 interface BoardNavbarProps {}
 
 export default function BoardNavbar(props: BoardNavbarProps) {
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
-  const [dashboardModalOpen, setDashboardModalOpen] = useState(false);
-  const { user, logout } = useContext(UserContext);
-  const boardOwnerId = useAppSelector((state) => state.board.owner_id);
+  const { user } = useContext(UserContext);
 
   const boardId = useAppSelector((state) => state.board.id);
 

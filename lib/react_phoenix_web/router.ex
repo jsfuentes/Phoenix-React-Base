@@ -36,9 +36,11 @@ defmodule ReactPhoenixWeb.Router do
   scope "/auth", ReactPhoenixWeb do
     pipe_through :browser
 
-    # get "/:provider", AuthController, :request
-    # get "/:provider/callback", AuthController, :callback
-    # post "/:provider/callback", AuthController, :callback
+    get "/google_login", AuthController, :google_login
+    get "/magic_link_login", AuthController, :magic_token_login
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+    post "/:provider/callback", AuthController, :callback
   end
 
   # Other scopes may use custom stacks.
