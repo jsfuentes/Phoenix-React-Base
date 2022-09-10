@@ -2,6 +2,7 @@ defmodule ReactPhoenixWeb.UserController do
   use ReactPhoenixWeb, :controller
   require Logger
 
+  alias ReactPhoenix.Email
   alias ReactPhoenix.Accounts
   alias ReactPhoenix.Accounts.User
 
@@ -68,5 +69,26 @@ defmodule ReactPhoenixWeb.UserController do
     conn
     |> configure_session(drop: true)
     |> send_resp(:no_content, "")
+  end
+
+  def send_magic_link(
+        %{assigns: %{current_user: current_user}} = conn,
+        %{"email" => email} = params
+      ) do
+    # If event login, will have board_id. If not homepage login
+    board_id = Map.get(params, "board_id")
+    cleaned_email = String.downcase(email)
+    magic_token = Accounts.generate_magic_token(current_user, cleaned_email)
+    login_params = params |> Map.put(:magic_token, magic_token)
+
+    # Use two different send_magic_link functions
+    {:ok, _} =
+      if is_nil(board_id) do
+        Email.send_magic_link(cleaned_email, login_params)
+      else
+        Email.send_magic_link(cleaned_email, login_params, board_id)
+      end
+
+    send_resp(conn, :ok, "")
   end
 end

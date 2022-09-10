@@ -3,7 +3,7 @@ import queryString from "query-string";
 import { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "src/components/Button";
+import GoogleButton from "src/components/GoogleButton";
 import Logo from "src/components/Logo";
 import UserContext from "src/contexts/UserContext";
 import googleIcon from "src/img/google.png";
@@ -36,21 +36,19 @@ export default function Login() {
       <div className="w-full flex-1 flex items-center justify-center mb-20">
         <div className="flex flex-col justify-center items-center w-full">
           <div className="w-11/12 md:w-full max-w-lg relative border border-gray-200 bg-white px-8 py-8 rounded-lg">
-            <div className="font-medium text-2xl">
+            <div className="font-medium text-2xl mb-4">
               Login or Sign up for free
             </div>
-            <div className="mt-8">
-              <Button fullWidth>
-                <div className="flex items-center">
-                  <div className="bg-white px-1 py-1 rounded">
-                    <img src={googleIcon} className="w-5 h-auto" />
-                  </div>
-                  <p className="ml-3 text-white font-medium text-lg">
-                    Continue with Google
-                  </p>
+            <GoogleButton>
+              <div className="flex items-center">
+                <div className="bg-white px-1 py-1 rounded">
+                  <img src={googleIcon} className="w-5 h-auto" />
                 </div>
-              </Button>
-            </div>
+                <p className="ml-3 text-white font-medium text-lg">
+                  Continue with Google
+                </p>
+              </div>
+            </GoogleButton>
           </div>
         </div>
       </div>

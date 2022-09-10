@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import Footer from "src/components/Footer";
 import Navbar from "src/components/Navbar";
 import PresenceList from "src/components/PresenceList";
-import BoardProvider from "src/contexts/BoardProvider";
 import { useAppDispatch } from "src/redux/hooks";
 import { updateSelf } from "src/redux/userStatus";
 const debug = require("debug")("app:Dashboard");
@@ -14,10 +13,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     dispatch(updateSelf({ name }));
-  }, [name]);
+  }, [dispatch, name]);
 
   return (
-    <BoardProvider>
+    <>
       <Navbar>
         <Link to="/dashboard" className="font-medium mx-2">
           Dashboard
@@ -42,6 +41,6 @@ export default function Dashboard() {
         </div>
       </div>
       <Footer />
-    </BoardProvider>
+    </>
   );
 }

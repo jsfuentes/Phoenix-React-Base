@@ -1,23 +1,33 @@
-interface Board {
+interface BoardBasic {
   id: string;
   owner_id: string;
   title: string;
+  prompt?: string;
+  emoji?: string;
   description?: string;
-  activities: Array<Activity>;
-  stickies: Array<Sticky>;
+  inserted_at: string;
+  updated_at: string;
 }
 
-interface BoardState extends Partial<Omit<Board, "activities" | "stickies">> {
+interface BoardState extends Partial<BoardBasic> {
   activities: {
-    byId: Record<number, Activity>;
-    allIds: number[];
+    byId: Record<string, Activity>;
+    allIds: string[];
   };
   stickies: {
-    byId: Record<number, Sticky>;
-    allIds: number[];
+    byId: Record<string, Sticky>;
+    allIds: string[];
   };
-  schedule_state?: {
-    activity_id: number;
-    activity_start_time: string;
-  };
+  schedule_state?: ScheduleState;
 }
+
+interface ScheduleStateLive {
+  status: "live";
+  activity_id: string;
+  activity_start_time: string;
+}
+
+type ScheduleState = ScheduleStateLive;
+
+//this instead of enum to make importing easier without sacrificing types
+type ScheduleStateStatus = ScheduleState["status"];

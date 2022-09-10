@@ -1,12 +1,11 @@
 import classNames from "classnames";
 import { useEffect } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { getError, getErrorMessage } from "src/components/Form/utils";
+import TextareaAutosize from "react-textarea-autosize";
+import { getError, getErrorMessage } from "src/components/form/utils";
 import { useRandomId } from "src/utils/hooks";
-const debug = require("debug")("app:Inputs:TextBorderlessInput");
 
-interface TextBorderlessInputProps {
-  //Can't use FieldValues or Record for some reason, error in input
+interface AutoExpandingTextAreaProps {
   register: UseFormRegister<any>;
   errors: FieldErrors;
   errorPrefix?: string;
@@ -22,13 +21,12 @@ interface TextBorderlessInputProps {
   className?: string;
   textColorCls?: string;
   required?: boolean;
+  suppressErrors?: boolean;
 }
 
-TextBorderlessInput.defaultProps = {
-  bottomBorder: true,
-};
-
-export default function TextBorderlessInput(props: TextBorderlessInputProps) {
+export default function AutoExpandingTextArea(
+  props: AutoExpandingTextAreaProps
+) {
   const {
     placeholder,
     name,
@@ -57,10 +55,10 @@ export default function TextBorderlessInput(props: TextBorderlessInputProps) {
 
   return (
     <>
-      <input
+      <TextareaAutosize
         id={id}
         className={classNames({
-          "outline-none-active bg-transparent overflow-text outline-none font-medium placeholder-gray-300 flex-shrink-0":
+          "outline-none-active resize-none bg-transparent overflow-text border-none focus:border-none focus:ring-transparent p-0 outline-none font-medium placeholder-gray-300 flex-shrink-0":
             true,
           "text-black focus:text-black hover:text-gray-800":
             !props.textColorCls,
@@ -80,7 +78,7 @@ export default function TextBorderlessInput(props: TextBorderlessInputProps) {
           pattern: pattern ? pattern : undefined,
         })}
       />
-      {err && (
+      {err && !props.suppressErrors && (
         <div className="mt-1 text-red-600">{`${
           errorPrefix || ""
         }${getErrorMessage(err)}`}</div>

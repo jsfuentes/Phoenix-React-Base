@@ -1,51 +1,39 @@
 import classNames from "classnames";
-import React, { useContext } from "react";
-import Crazy8Activity from "src/components/board/activity/Crazy8Activity";
-import StickySort from "src/components/board/activity/StickySort";
-import VoteActivity from "src/components/board/activity/VoteActivity";
-import VoteResultsActivity from "src/components/board/activity/VoteResultsActivity";
-import StickyNoteInput from "src/components/board/StickyNoteInput";
-import TempBoardContext from "src/contexts/TempBoardContext";
-
+import Crazy8Activity from "src/components/Board/activity/Crazy8Activity";
+import { useAppSelector } from "src/redux/hooks";
+const debug = require("debug")("app:components:Board:ActiveBoard");
 interface ActiveBoardProps {
   className?: string;
 }
 
 export default function ActiveBoard(props: ActiveBoardProps) {
-  const { user_id, activities, current_activity } =
-    useContext(TempBoardContext);
+  const currentActivityType = useAppSelector((state) => {
+    debug("Actvitiy id", state.board);
+    return state.board.schedule_state?.activity_id
+      ? state.board.activities.byId[state.board.schedule_state?.activity_id]
+          .type
+      : null;
+  });
 
-  let activity = <></>;
-  switch (current_activity?.type) {
+  debug("Current activity type", currentActivityType);
+
+  let activity = null;
+  switch (currentActivityType) {
     case "crazy8":
       activity = <Crazy8Activity />;
       break;
-    case "theme_sort":
-      activity = <StickySort />;
-      break;
-    case "upvote":
-      activity = <VoteActivity />;
-      break;
-    case "vote_results":
-      activity = <VoteResultsActivity />;
-      break;
     default:
-      activity = <></>;
       break;
   }
 
   return (
-    <>
-      {current_activity && (
-        <div
-          className={classNames({
-            [props.className || ""]: props.className,
-            "flex flex-col bg-gray-50 overflow-hidden": true,
-          })}
-        >
-          {activity}
-        </div>
-      )}
-    </>
+    <div
+      className={classNames({
+        [props.className || ""]: props.className,
+        "flex bg-gray-50 overflow-hidden": true,
+      })}
+    >
+      {activity}
+    </div>
   );
 }

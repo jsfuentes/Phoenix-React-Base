@@ -65,11 +65,11 @@ The repo already has a build script `build.sh` and `render.yaml` file with the c
 
 ### Steps
 
+(Optional) Change the `- name:` of your Render Services to your Project Name in `render.yaml`
+
 1. Deploy using the Blueprint option in [Render](https://render.com) by connecting to your Github Repo
 2. Add the new DB's username, password, database, and host to `.prod.env`
 3. Copy `.prod.env` and add it to the web services Environment/Secret File so it can be used in production without checking it in the repo
-
-(Optional) Change the name of your Render Services to your Project Name
 
 ## Learn more
 

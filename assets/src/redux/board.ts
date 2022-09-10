@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useAppSelector } from "./hooks";
 const debug = require("debug")("app:redux:board");
 
 const initialState: BoardState = {
@@ -86,3 +87,13 @@ const boardSlice = createSlice({
 export const { add_update_sticky, update_board } = boardSlice.actions;
 
 export default boardSlice.reducer;
+
+export function useCurrentActivity() {
+  return useAppSelector((state) => {
+    if (!state.board.schedule_state?.activity_id) {
+      return null;
+    }
+
+    return state.board.activities.byId[state.board.schedule_state?.activity_id];
+  });
+}

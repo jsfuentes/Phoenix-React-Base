@@ -47,7 +47,10 @@ defmodule ReactPhoenixWeb.Router do
 
     get "/", ApiController, :index
     post "/join", ApiController, :join
+    post "/on_auth", ApiController, :on_auth
     post "/users/me", UserController, :me
+    post "/users/logout", UserController, :logout
+    post "/users/magic_link", UserController, :send_magic_link
     resources "/users", UserController, except: [:new, :edit, :index, :delete]
     resources "/boards", BoardController, except: [:new, :edit, :index, :delete]
   end

@@ -64,16 +64,22 @@ export default class SocketClient {
     board_id: string,
     payload: {
       userStatusR?: React.MutableRefObject<Partial<UserStatusState>> | null;
-    }
+    },
+    callback: (payload: { data: BoardState }) => void
   ): Promise<{ channel: Channel; presence: Presence }> => {
     if (!board_id) {
       throw new Error("Can't join board channel without board_id");
     }
 
     const socket = await this.connect();
-    const channel = await joinChannel(socket, `board:${board_id}`, () => ({
-      userStatus: payload.userStatusR?.current,
-    }));
+    const channel = await joinChannel(
+      socket,
+      `board:${board_id}`,
+      () => ({
+        userStatus: payload.userStatusR?.current,
+      }),
+      callback
+    );
 
     const presence = new Presence(channel);
     return { channel, presence };

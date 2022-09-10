@@ -28,6 +28,7 @@
     "linebreak-style": ["error", "unix"],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off", // Webpack config adds react everywhere
     "react/no-unescaped-entities": "off", //I think &pos; vs ' can cause more accidently errors than allowing potentially jsx code into the text(WYSIWYG)
     "no-unused-vars": "off", //I like having Sentry and debug always available
     "@typescript-eslint/no-unused-vars": "off", //I like having Sentry and debug always available

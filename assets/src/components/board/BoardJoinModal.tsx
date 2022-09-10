@@ -1,8 +1,8 @@
 import classNames from "classnames";
-import React, { useCallback, useContext } from "react";
+import { useCallback, useContext } from "react";
 import { useForm } from "react-hook-form";
 import Button from "src/components/Button";
-import TextBorderlessInput from "src/components/form/TextBorderlessInput";
+import TextBorderlessInput from "src/components/Form/TextBorderlessInput";
 import Modal from "src/components/Modal";
 import UserContext from "src/contexts/UserContext";
 

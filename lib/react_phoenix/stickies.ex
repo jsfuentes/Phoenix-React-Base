@@ -53,6 +53,13 @@ defmodule ReactPhoenix.Stickies do
     %Sticky{}
     |> Sticky.changeset(attrs)
     |> Repo.insert()
+    |> case do
+      {:ok, sticky} ->
+        {:ok, Repo.preload(sticky, [:user])}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """

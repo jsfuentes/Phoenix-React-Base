@@ -132,6 +132,25 @@ export default function BoardProvider(props: BoardProviderProps) {
     }
   }, [boardChannel, updateBoardState]);
 
+  useEffect(() => {
+    function handleBoardDiff(diff: BoardDiff) {
+      debug("Recieved board diff", diff);
+      switch (diff.type) {
+        case "add_sticky":
+          dispatch(add_update_sticky(diff.payload));
+          break;
+        case "update_sticky":
+          dispatch(add_update_sticky(diff.payload));
+          break;
+      }
+    }
+
+    if (boardChannel) {
+      boardChannel.on("board_diff", handleBoardDiff);
+      return () => boardChannel.off("board_diff");
+    }
+  }, [boardChannel, dispatch]);
+
   useEffect(
     function syncAttendeeInfo() {
       dispatch(
@@ -174,52 +193,12 @@ export default function BoardProvider(props: BoardProviderProps) {
     [boardChannel, dispatch]
   );
 
-  const updateSticky = useCallback(
-    async (sticky: Sticky, newSticky: Partial<Sticky>) => {
-      if (!boardChannel) {
-        dispatch(
-          logErrorMessage(
-            "Updating sticky note failed, try again or contact support - invalid board connection"
-          )
-        );
-        return;
-      }
-
-      const finalSticky = {
-        ...sticky,
-        ...newSticky,
-      };
-      debug("Update sticky to", finalSticky);
-
-      dispatch(add_update_sticky(finalSticky));
-      try {
-        const resp = await pushChannelAsync(boardChannel, "board_diff", {
-          type: "update_sticky",
-          payload: finalSticky,
-        });
-        debug("update_sticky resp", resp);
-      } catch (err) {
-        dispatch(
-          logChannelPushError(err, "Updating Sticky", { notifType: null })
-        );
-        toast(
-          "There was a problem updating that idea. Try again or refresh the page"
-        );
-
-        //undo optimistic update
-        dispatch(add_update_sticky(sticky));
-      }
-    },
-    [boardChannel, dispatch]
-  );
-
   const value = useMemo(() => {
     return {
       boardChannel,
       addSticky,
-      updateSticky,
     };
-  }, [boardChannel, addSticky, updateSticky]);
+  }, [boardChannel, addSticky]);
 
   if (!boardChannel) {
     return <Loading />;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Dropdown, { MenuContainer, MenuItem } from "src/components/Dropdown";
 import Modal from "src/components/Modal";
 
