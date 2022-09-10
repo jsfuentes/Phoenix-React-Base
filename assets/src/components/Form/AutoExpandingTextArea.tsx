@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { useEffect } from "react";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import TextareaAutosize from "react-textarea-autosize";
-import { getError, getErrorMessage } from "src/components/form/utils";
+import { getError, getErrorMessage } from "src/components/Form/utils";
 import { useRandomId } from "src/utils/hooks";
 
 interface AutoExpandingTextAreaProps {
