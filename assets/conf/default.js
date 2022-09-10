@@ -1,6 +1,6 @@
 module.exports = {
   NAME: "Default",
-  PROJECT_NAME: "Pathspace",
+  PROJECT_NAME: "Poptake",
   HTML_ROOT_ID: "root",
   //Urls should not have trailing slash
   SERVER_URL: "http://localhost:4000",
