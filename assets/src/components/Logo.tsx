@@ -36,7 +36,7 @@ export default function Logo(props: LogoProps) {
       {logoSrc && (
         <img
           className={classNames({
-            "w-7 h-7": true,
+            "w-12 h-7": true,
             [props.imgClassName || ""]: props.imgClassName,
           })}
           src={logoSrc}
