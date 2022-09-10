@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React, { useCallback, useContext, useEffect } from "react";
-import StickyNoteForm from "src/components/board/Sticky/StickyNoteForm";
+import StickyNoteForm from "src/components/Board/Sticky/StickyNoteForm";
 import BoardContext from "src/contexts/BoardContext";
 import { useAppDispatch } from "src/redux/hooks";
 import { logErrorMessage } from "src/redux/notification";

@@ -1,21 +1,19 @@
 import classNames from "classnames";
-import Crazy8Activity from "src/components/Board/activity/Crazy8Activity";
+import Crazy8Activity from "src/components/Board/Activity/Crazy8Activity";
 import { useAppSelector } from "src/redux/hooks";
 const debug = require("debug")("app:components:Board:ActiveBoard");
+
 interface ActiveBoardProps {
   className?: string;
 }
 
 export default function ActiveBoard(props: ActiveBoardProps) {
-  const currentActivityType = useAppSelector((state) => {
-    debug("Actvitiy id", state.board);
-    return state.board.schedule_state?.activity_id
+  const currentActivityType = useAppSelector((state) =>
+    state.board.schedule_state?.activity_id
       ? state.board.activities.byId[state.board.schedule_state?.activity_id]
           .type
-      : null;
-  });
-
-  debug("Current activity type", currentActivityType);
+      : null
+  );
 
   let activity = null;
   switch (currentActivityType) {

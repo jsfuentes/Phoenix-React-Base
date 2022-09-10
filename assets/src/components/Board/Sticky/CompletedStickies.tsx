@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import Masonry from "react-masonry-component";
-import CompletedSticky from "src/components/board/Sticky/CompletedSticky";
+import CompletedSticky from "src/components/Board/Sticky/CompletedSticky";
 
 interface CompletedStickiesProps {
   stickyIds: string[];
