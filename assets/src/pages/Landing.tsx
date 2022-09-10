@@ -1,4 +1,6 @@
+import conf from "conf";
 import { useCallback, useContext, useEffect, useState } from "react";
+import Helmet from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import { axios } from "src/api/axios";
 import BoardService from "src/api/BoardService";
@@ -13,7 +15,7 @@ const debug = require("debug")("app:Landing");
 export default function Landing() {
   const { user } = useContext(UserContext);
   const [resp, setResp] = useState("");
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -40,10 +42,14 @@ export default function Landing() {
     } catch (err) {
       debug("Go to board on dashboard failed");
     }
-  }, [dispatch, user?.id]);
+  }, [dispatch, navigate, user?.id]);
 
   return (
     <>
+      <Helmet>
+        <title>{conf.get("PROJECT_NAME")}</title>
+      </Helmet>
+
       <Navbar>
         <Link to="/dashboard" className="font-medium mx-2">
           Dashboard

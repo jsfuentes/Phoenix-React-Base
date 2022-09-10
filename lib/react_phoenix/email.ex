@@ -39,7 +39,7 @@ defmodule ReactPhoenix.Email do
   defp send_magic_link_helper(email, fields, template_alias) do
     email_obj =
       new()
-      |> from("founders@clayboard.com")
+      |> from("hello@clayboard.com")
       |> to(String.downcase(email))
       |> put_provider_option(:template_alias, template_alias)
       |> put_provider_option(:template_model, fields)

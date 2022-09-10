@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React from "react";
+import conf from "conf";
 import logo from "src/img/logo.png";
 
 interface LogoProps {
@@ -27,7 +27,7 @@ export default function Logo(props: LogoProps) {
     "cursor-default": props.unclickable,
   });
 
-  //if name given, don't show Clayboard logo
+  //if name given, don't show logo
   const logoSrc = props.logo ? props.logo : !props.name && logo;
 
   return (
@@ -46,7 +46,7 @@ export default function Logo(props: LogoProps) {
       )}
       {props.showName && (
         <span className="font-medium text-base ml-2.5">
-          {props.name || "Clayboard"}
+          {props.name || conf.get("PROJECT_NAME")}
         </span>
       )}
     </a>

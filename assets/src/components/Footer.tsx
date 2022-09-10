@@ -1,3 +1,4 @@
+import conf from "conf";
 import HeartImg from "src/img/heart.png";
 import Logo from "./Logo";
 
@@ -14,7 +15,7 @@ export default function Footer() {
           <span>on Earth</span>
         </p>
         <p className="text-sm text-gray-500 text-center sm:text-left">
-          © 2021 Clayboard Inc.
+          © 2022 {conf.get("PROJECT_NAME")} Inc.
         </p>
       </div>
     </footer>

@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import conf from "conf";
 import { useCallback, useContext } from "react";
 import { useForm } from "react-hook-form";
 import Button from "src/components/Button";
@@ -65,7 +66,7 @@ export default function BoardJoinModal(props: BoardJoinModalProps) {
             className="w-full text-4xl text-gray-800"
             name={"name"}
             disabled={false}
-            placeholder={"Carly Clayboard"}
+            placeholder={`Jorge ${conf.get("PROJECT_NAME")}`}
             textColorCls={
               "text-gray-800 focus:text-gray-800 hover:text-gray-700"
             }

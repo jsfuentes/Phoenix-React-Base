@@ -7,7 +7,6 @@ import GoogleButton from "src/components/GoogleButton";
 import Logo from "src/components/Logo";
 import UserContext from "src/contexts/UserContext";
 import googleIcon from "src/img/google.png";
-
 const debug = require("debug")("app:pages:Login");
 
 //Can set "route" and "msg" with query params
@@ -30,7 +29,7 @@ export default function Login() {
   return (
     <div className="h-screen w-screen bg-gray-100 flex flex-col">
       <Helmet>
-        <title>Login | Clayboard</title>
+        <title>Login | {conf.get("PROJECT_NAME")}</title>
       </Helmet>
       <Logo className="mt-6 mx-8" urlOnClick={conf.get("LANDING_URL")} />
       <div className="w-full flex-1 flex items-center justify-center mb-20">

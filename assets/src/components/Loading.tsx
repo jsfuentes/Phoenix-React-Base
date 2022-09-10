@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import conf from "conf";
 import { useEffect, useState } from "react";
 import Logo from "src/img/logo.png";
 
@@ -34,7 +35,7 @@ export default function Loading(props: LoadingProps) {
         <img
           className={`${props.animateClass} w-10 h-auto`}
           src={Logo}
-          alt="Clayboard | The Simplest Webinar & Events Platform"
+          alt={`${conf.get("PROJECT_NAME")} Logo`}
           referrerPolicy="no-referrer"
         />
       )}

@@ -1,3 +1,4 @@
+import conf from "conf";
 import React, { useContext, useEffect } from "react";
 import { toast } from "react-toastify";
 import IntercomButton from "src/components/IntercomButton";
@@ -45,9 +46,9 @@ export default function ErrorManager(props: ErrorManagerProps) {
               Pardon the Interruption
             </div>
             <div className="text-4xl mb-4">
-              Looks like you're already in this Clayboard event in another
-              browser or tab. Please close any extra browsers or tabs, then
-              reload this page.
+              Looks like you're already in this {conf.get("PROJECT_NAME")} event
+              in another browser or tab. Please close any extra browsers or
+              tabs, then reload this page.
             </div>
             <div className="flex items-center justify-center mt-4">
               {logout && (

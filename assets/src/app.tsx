@@ -53,13 +53,7 @@ if (process.env.NODE_ENV !== "production") {
       integrations: [
         new BrowserTracing({
           // routingInstrumentation: Sentry.reactRouterV6Instrumentation(history),
-          tracingOrigins: [
-            "localhost",
-            "eta-staging.onrender.com",
-            "app.clayboard.com",
-            "app.pathspace.com",
-            /^\//,
-          ],
+          tracingOrigins: ["localhost", conf.get("CLIENT_URL"), /^\//],
           // ... other options
         }),
       ],

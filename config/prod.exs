@@ -19,12 +19,12 @@ config :logger, level: :info
 config :react_phoenix, ReactPhoenix.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "15")
 
-# HOST_URL should be in form "app.clayboard.com" or "localhost:3000"
+# HOST_URL should be in form "app.pathspace.com" or "localhost:3000"
 config :react_phoenix, ReactPhoenixWeb.Endpoint,
   http: [port: {:system, "PORT"}],
   url: [scheme: "https", host: System.get_env("HOST_URL"), port: 443],
   # check_origin: [host_url], #might be needed for live dashboard
-  # url: [scheme: "https", host: "clayboard.com", port: 443],
+  # url: [scheme: "https", host: "pathspace.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :sentry,

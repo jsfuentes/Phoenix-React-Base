@@ -36,7 +36,7 @@ export default function SocketProvider(props: SocketProviderProps) {
   useEffect(() => {
     if (isRefreshing) {
       toast(
-        "✨ New version of Clayboard available! Automatically restarting in 8 seconds..."
+        "✨ New version available! Automatically restarting in 8 seconds..."
       );
       const timeoutId = setTimeout(() => window.location.reload(), 8000);
       return () => clearTimeout(timeoutId);
