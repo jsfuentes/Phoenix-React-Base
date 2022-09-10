@@ -24,8 +24,8 @@ export default function Board(props: BoardProps) {
       </Helmet>
       <div className="h-screen flex flex-col">
         <BoardNavbar />
-        <div className={"flex-1 flex overflow-hidden"}>
-          <ActiveBoard className={"flex-1 min-h-0"} />
+        <div className="flex-1 flex overflow-hidden">
+          <ActiveBoard className="flex-1 min-h-0" />
         </div>
       </div>
     </BoardProvider>

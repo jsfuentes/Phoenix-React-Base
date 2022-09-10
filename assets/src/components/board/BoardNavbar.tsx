@@ -15,7 +15,7 @@ export default function BoardNavbar(props: BoardNavbarProps) {
   user?.id && params.append("id", user?.id);
 
   return (
-    <Navbar className="border-b border-gray-200" rightCls="text-right">
+    <Navbar className="border-b border-gray-200">
       <div className="flex items-end justify-end">
         <ShareBoard />
       </div>

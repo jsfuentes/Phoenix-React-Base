@@ -1,4 +1,4 @@
-import ActivityHeader from "src/components/Board/activity/ActivityHeader";
+import ActivityHeader from "src/components/Board/Activity/ActivityHeader";
 import CompletedStickies from "src/components/Board/Sticky/CompletedStickies";
 import StickyNoteInput from "src/components/Board/Sticky/StickyNoteInput";
 import { useAppSelector } from "src/redux/hooks";
