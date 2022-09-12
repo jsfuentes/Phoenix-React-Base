@@ -40,7 +40,7 @@ export default function UserProvider(props: UserProviderProps) {
 
   //only patch when it didnt just come out of the server and an update is likely
   const updateUser = useCallback(
-    async (freshUser: User | null = null, shouldPatch = false) => {
+    async (freshUser: User | undefined = undefined, shouldPatch = false) => {
       const newUser = freshUser ? freshUser : await getCreateUser();
       debug("Curuser: ", newUser);
 

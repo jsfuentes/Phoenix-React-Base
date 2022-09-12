@@ -42,7 +42,7 @@ export default function GoogleButton(props: GoogleButtonProps) {
     if (!user) {
       dispatch(
         logErrorMessage(
-          "Failed to properly intialize user, refresh and try again or contact support"
+          "Failed to properly init user, refresh and try again or contact support"
         )
       );
       return;

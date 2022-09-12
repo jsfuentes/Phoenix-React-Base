@@ -15,7 +15,7 @@ interface GuessMeResponse {
 
 async function guessMe(user: Pick<User, "id" | "type">) {
   try {
-    const resp = await axios.post<GuessMeResponse>("/api/users", { user });
+    const resp = await axios.post<GuessMeResponse>("/api/users/me", { user });
     return resp.data.data;
   } catch (err) {
     store.dispatch(logAxiosError(err, "Fetching user session"));
