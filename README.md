@@ -78,3 +78,6 @@ The repo already has a build script `build.sh` and `render.yaml` file with the c
 - Template Repo: https://github.com/jsfuentes/Phoenix-React-Base
 - Phoenix Docs: https://hexdocs.pm/phoenix
 - Elixir Forum: https://elixirforum.com/c/phoenix-forum
+
+#### Future Improvements
+- Add organizations for users
