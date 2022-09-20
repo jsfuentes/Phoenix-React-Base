@@ -81,3 +81,4 @@ The repo already has a build script `build.sh` and `render.yaml` file with the c
 
 #### Future Improvements
 - Add organizations for users
+- Signing salt in endpoint should be generated too
