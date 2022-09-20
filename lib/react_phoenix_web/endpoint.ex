@@ -8,7 +8,7 @@ defmodule ReactPhoenixWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_react_phoenix_key",
-    signing_salt: "uPcRC+JY"
+    signing_salt: "XXXXXXXX"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
