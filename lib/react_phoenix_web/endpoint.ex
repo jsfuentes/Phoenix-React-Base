@@ -1,4 +1,5 @@
 defmodule ReactPhoenixWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :react_phoenix
 
   # The session will be stored in the cookie and signed,
@@ -7,7 +8,7 @@ defmodule ReactPhoenixWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_react_phoenix_key",
-    signing_salt: "XXXXXXXX"
+    signing_salt: "uPcRC+JY"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
@@ -24,7 +25,7 @@ defmodule ReactPhoenixWeb.Endpoint do
     at: "/",
     from: :react_phoenix,
     gzip: false,
-    only: ~w(media src favicon.ico robots.txt)
+    only: ~w(media src favicon.ico robots.txt pdf.worker.min.js)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -47,6 +48,7 @@ defmodule ReactPhoenixWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
