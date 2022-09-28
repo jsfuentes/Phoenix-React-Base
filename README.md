@@ -51,9 +51,10 @@ cd ..
    (Optional) Change PROJECT_NAME in `default.js`, favicon.ico, and logo.png to customize to your branding
 
 ## Running
+Make sure you have .prod.env setup with all the db and secret info
 
 ```
-iex -S mix phx.server
+source .prod.env
 ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
