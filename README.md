@@ -55,6 +55,7 @@ Make sure you have .prod.env setup with all the db and secret info
 
 ```
 source .prod.env
+iex -S mix phx.server
 ```
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
