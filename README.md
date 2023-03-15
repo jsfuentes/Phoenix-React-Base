@@ -51,8 +51,10 @@ cd ..
    (Optional) Change PROJECT_NAME in `default.js`, favicon.ico, and logo.png to customize to your branding
 
 ## Running
+Make sure you have .prod.env setup with all the db and secret info
 
 ```
+source .prod.env
 iex -S mix phx.server
 ```
 
@@ -81,3 +83,6 @@ The repo already has a build script `build.sh` and `render.yaml` file with the c
 
 #### Future Improvements
 - Add organizations for users
+- Signing salt in endpoint should be generated too
+- react-google-login is now unmaintained
+- debug version is frozen because code depends on past versions
