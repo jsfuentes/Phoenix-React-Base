@@ -1,12 +1,20 @@
-import { FieldErrors } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrors,
+  FieldErrorsImpl,
+  Merge
+} from "react-hook-form";
 const debug = require("debug")("app:Inputs:utils");
 
-export function getErrorMessage(errors: FieldErrors) {
+export function getErrorMessage(
+  errors: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
+) {
   if (!errors || !errors.type) {
     return;
   }
 
   const type = errors.type;
+  debug(type, typeof type);
   switch (type) {
     case "maxLength":
       return "This field is too long";
@@ -42,14 +50,17 @@ export function generateErrorMessage(
 }
 
 export function getError(errors: FieldErrors, name: string) {
-  let err: FieldErrors = errors;
+  let err: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined =
+    undefined;
   for (const subKey of name.split(".")) {
     // debug("TEST", { err, subKey, name, errors });
-    if (err && subKey in err) {
-      err = err[subKey];
+    if (errors && subKey in errors) {
+      err = errors[subKey];
+      break;
     } else {
-      return null;
+      return undefined;
     }
   }
+
   return err;
 }
